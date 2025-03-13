@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Group, Mesh } from 'three'
 import { useSpring, animated } from '@react-three/drei'
-
+//super hhs
 interface CharacterProps {
   position: [number, number, number]
 }
