@@ -1,17 +1,24 @@
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
-import Character from './components/Character'
+import { Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
+import { Physics } from "@react-three/rapier";
+import Game from "./components/Game";
+import UI from "./components/UI";
+import LoadingScreen from "./components/LoadingScreen";
+import "./App.css";
 
 function App() {
   return (
-    <Canvas camera={{ position: [0, 1.5, 5], fov: 50 }}>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
-      <Character position={[0, 0, 0]} />
-      <OrbitControls />
-      <gridHelper args={[10, 10]} />
-    </Canvas>
-  )
+    <div className="w-screen h-screen overflow-hidden">
+      <Suspense fallback={<LoadingScreen />}>
+        <Canvas shadows camera={{ fov: 75, position: [0, 1.6, 0] }}>
+          <Physics>
+            <Game />
+          </Physics>
+        </Canvas>
+        <UI />
+      </Suspense>
+    </div>
+  );
 }
 
-export default App
+export default App;
