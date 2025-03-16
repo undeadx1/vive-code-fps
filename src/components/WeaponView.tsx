@@ -34,6 +34,9 @@ const WeaponView = () => {
   // 3D 모델 로드
   const { scene } = useGLTF("https://agent8-games.verse8.io/assets/3D/weapons/ak47.glb");
   
+  // 100도를 라디안으로 변환 (Three.js는 라디안 단위 사용)
+  const yRotation = 100 * (Math.PI / 180);
+  
   // 반동 효과를 위한 상태
   const recoilRef = useRef({
     active: false,
@@ -43,9 +46,9 @@ const WeaponView = () => {
     baseRotationRecoil: new Euler(-0.05, 0, 0),
     positionRecoil: new Vector3(0, 0, 0),
     rotationRecoil: new Euler(0, 0, 0),
-    // 화면 중앙에 위치하도록 조정된 기본 위치와 회전
-    originalPosition: new Vector3(0, -0.2, -0.5),
-    originalRotation: new Euler(0, Math.PI, 0),
+    // 화면 오른쪽에 위치하도록 조정된 기본 위치와 회전
+    originalPosition: new Vector3(0.1, -0.2, -0.5), // x값을 1에서 0.1로 변경
+    originalRotation: new Euler(0, yRotation, 0), // Y축 100도 회전
   });
   
   // 무기 모델 생성
@@ -62,8 +65,8 @@ const WeaponView = () => {
     // 모델 클론 생성
     const weaponModel = SkeletonUtils.clone(scene);
     
-    // 모델 스케일 및 위치 조정
-    weaponModel.scale.set(0.03, 0.03, 0.03); // 모델 크기 증가
+    // 모델 스케일 및 위치 조정 - 스케일 증가
+    weaponModel.scale.set(0.08, 0.08, 0.08); // 모델 크기 증가 (0.05 -> 0.08)
     
     // 그림자 설정
     weaponModel.traverse((child) => {
@@ -85,10 +88,15 @@ const WeaponView = () => {
     
     // 무기 위치 설정
     weaponRef.current.position.copy(recoilRef.current.originalPosition);
-    weaponRef.current.rotation.copy(recoilRef.current.originalRotation);
+    
+    // 무기 회전 설정 - Y축 100도 회전
+    weaponRef.current.rotation.set(0, yRotation, 0);
+    
+    // 원래 회전값 업데이트 (반동 계산에 사용)
+    recoilRef.current.originalRotation = new Euler(0, yRotation, 0);
     
     console.log("무기 모델 생성 완료");
-  }, [scene]);
+  }, [scene, yRotation]);
   
   // 발사 처리
   useEffect(() => {
@@ -277,8 +285,8 @@ const WeaponView = () => {
       {/* 무기 모델 */}
       <group 
         ref={weaponRef} 
-        position={[0, -0.2, -0.5]} // 화면 중앙에 위치하도록 조정
-        rotation={[0, Math.PI, 0]}
+        position={[0.1, -0.2, -0.5]} // x값을 1에서 0.1로 변경
+        rotation={[0, yRotation, 0]} // Y축 100도 회전
         visible={true}
       />
       
@@ -287,7 +295,7 @@ const WeaponView = () => {
         <MuzzleFlash 
           position={muzzlePointRef.current.getWorldPosition 
             ? muzzlePointRef.current.getWorldPosition(new Vector3()) 
-            : new Vector3(0, -0.15, -1.0)}
+            : new Vector3(0.1, -0.15, -1.0)} // 머즐 플래시 위치도 x=0.1로 변경
           onComplete={() => setShowMuzzleFlash(false)}
         />
       )}
