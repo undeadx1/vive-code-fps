@@ -1,62 +1,65 @@
 import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Vector3, BufferGeometry, LineBasicMaterial, Line, TextureLoader, RepeatWrapping } from 'three';
+import { Vector3, DoubleSide, PlaneGeometry, Mesh, MeshBasicMaterial, TextureLoader } from 'three';
 
-// 총알 궤적 텍스처 로더 생성
-const textureLoader = new TextureLoader();
-const bulletTrailTexture = textureLoader.load('https://agent8-games.verse8.io/assets/textures/effects/bullet_trail.png');
-
-// 텍스처 설정
-bulletTrailTexture.wrapS = RepeatWrapping;
-bulletTrailTexture.wrapT = RepeatWrapping;
-bulletTrailTexture.repeat.set(1, 1);
+// Load the bullet trail texture
+const bulletTrailTexture = new TextureLoader().load('https://agent8-games.verse8.io/assets/3D/textures/effects/shootlaser.png');
 
 const BulletTrail = ({ start, end, onComplete }) => {
-  const lineRef = useRef();
+  const trailRef = useRef();
   const startTime = useRef(Date.now());
-  const duration = 200; // 200ms 동안 표시
+  const duration = 200; // 200ms duration
   
-  // 라인 지오메트리 생성
+  // Create trail effect
   useEffect(() => {
-    if (lineRef.current) {
-      const line = lineRef.current;
+    if (trailRef.current) {
+      const direction = new Vector3().subVectors(end, start).normalize();
+      const distance = start.distanceTo(end);
       
-      // 지오메트리 생성
-      const geometry = new BufferGeometry();
-      const points = [start, end];
-      geometry.setFromPoints(points);
-      line.geometry = geometry;
+      // Create a plane that faces the camera but stretches from start to end
+      const geometry = new PlaneGeometry(0.05, distance);
+      geometry.translate(0, distance / 2, 0);
+      geometry.rotateX(Math.PI / 2);
       
-      // 라인 재질 설정
-      const material = new LineBasicMaterial({
-        color: 0xffff00,
+      // Create material with the loaded trail texture
+      const material = new MeshBasicMaterial({
+        map: bulletTrailTexture,
         transparent: true,
         opacity: 1,
-        linewidth: 3
+        color: 0xffffff, // Use white to preserve texture colors
+        side: DoubleSide,
+        depthWrite: false
       });
       
-      line.material = material;
+      // Set up the mesh
+      trailRef.current.geometry = geometry;
+      trailRef.current.material = material;
+      
+      // Position and orient the trail
+      trailRef.current.position.copy(start);
+      
+      // Look at the end point
+      trailRef.current.lookAt(end);
     }
   }, [start, end]);
   
-  // 애니메이션 처리
+  // Animation handling
   useFrame(() => {
-    if (lineRef.current) {
+    if (trailRef.current) {
       const elapsed = Date.now() - startTime.current;
       const progress = Math.min(elapsed / duration, 1);
       
-      // 투명도 애니메이션
-      const opacity = 1 - progress;
-      lineRef.current.material.opacity = opacity;
+      // Fade out the trail
+      trailRef.current.material.opacity = 1 - progress;
       
-      // 애니메이션 완료 시 콜백 호출
+      // Call completion callback when animation is done
       if (progress >= 1 && onComplete) {
         onComplete();
       }
     }
   });
   
-  return <line ref={lineRef} />;
+  return <mesh ref={trailRef} />;
 };
 
 export default BulletTrail;

@@ -1,94 +1,66 @@
 import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Vector3, BufferGeometry, PointsMaterial, Points, Float32BufferAttribute, TextureLoader } from 'three';
+import { Sprite, SpriteMaterial, NormalBlending, TextureLoader, Vector3 } from 'three';
 
-// 충돌 효과 텍스처 로더 생성
-const textureLoader = new TextureLoader();
-const impactTexture = textureLoader.load('https://agent8-games.verse8.io/assets/textures/effects/impact_particle.png');
+// Load the bullet hole texture
+const bulletHoleTexture = new TextureLoader().load('https://agent8-games.verse8.io/assets/3D/textures/effects/bullethole.png');
 
-const ImpactEffect = ({ position, onComplete }) => {
-  const pointsRef = useRef();
+const ImpactEffect = ({ position, normal, onComplete }) => {
+  const spriteRef = useRef();
   const startTime = useRef(Date.now());
-  const duration = 500; // 500ms 동안 표시
-  const particleCount = 20;
+  const duration = 5000; // 5 seconds duration for bullet holes
   
-  // 파티클 지오메트리 생성
+  // Initialize sprite
   useEffect(() => {
-    if (pointsRef.current) {
-      const points = pointsRef.current;
+    if (spriteRef.current) {
+      const sprite = spriteRef.current;
       
-      // 지오메트리 생성
-      const geometry = new BufferGeometry();
-      const positions = [];
-      const velocities = [];
-      
-      for (let i = 0; i < particleCount; i++) {
-        // 초기 위치 (충돌 지점)
-        positions.push(0, 0, 0);
-        
-        // 랜덤 방향으로 퍼지는 속도
-        const angle = Math.random() * Math.PI * 2;
-        const elevation = Math.random() * Math.PI - Math.PI / 2;
-        const speed = 0.05 + Math.random() * 0.1;
-        
-        velocities.push(
-          Math.cos(angle) * Math.cos(elevation) * speed,
-          Math.sin(elevation) * speed,
-          Math.sin(angle) * Math.cos(elevation) * speed
-        );
-      }
-      
-      geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
-      geometry.userData.velocities = velocities;
-      points.geometry = geometry;
-      
-      // 파티클 재질 설정
-      const material = new PointsMaterial({
-        color: 0xff8800,
-        size: 0.1,
+      // Set sprite material with the loaded texture
+      const material = new SpriteMaterial({
+        map: bulletHoleTexture,
+        color: 0xffffff,
         transparent: true,
+        blending: NormalBlending,
         opacity: 1,
-        map: impactTexture
+        depthWrite: false,
+        depthTest: true
       });
       
-      points.material = material;
-      points.position.copy(position);
+      sprite.material = material;
+      sprite.scale.set(0.1, 0.1, 1); // Smaller size for bullet holes
+      
+      // Position slightly in front of the hit surface to prevent z-fighting
+      const adjustedPosition = position.clone();
+      if (normal) {
+        adjustedPosition.addScaledVector(normal, 0.01);
+      }
+      sprite.position.copy(adjustedPosition);
+      
+      // Random rotation for variety
+      sprite.material.rotation = Math.random() * Math.PI * 2;
     }
-  }, [position]);
+  }, [position, normal]);
   
-  // 애니메이션 처리
+  // Animation handling - slow fade out
   useFrame(() => {
-    if (pointsRef.current) {
+    if (spriteRef.current) {
       const elapsed = Date.now() - startTime.current;
       const progress = Math.min(elapsed / duration, 1);
       
-      // 파티클 위치 업데이트
-      const positions = pointsRef.current.geometry.attributes.position.array;
-      const velocities = pointsRef.current.geometry.userData.velocities;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const i3 = i * 3;
-        
-        // 속도에 따라 위치 업데이트
-        positions[i3] += velocities[i3];
-        positions[i3 + 1] += velocities[i3 + 1] - 0.001; // 중력 효과
-        positions[i3 + 2] += velocities[i3 + 2];
+      // Only start fading out in the last 20% of the duration
+      if (progress > 0.8) {
+        const fadeProgress = (progress - 0.8) / 0.2;
+        spriteRef.current.material.opacity = 1 - fadeProgress;
       }
       
-      pointsRef.current.geometry.attributes.position.needsUpdate = true;
-      
-      // 투명도 애니메이션
-      const opacity = 1 - progress;
-      pointsRef.current.material.opacity = opacity;
-      
-      // 애니메이션 완료 시 콜백 호출
+      // Call completion callback when animation is done
       if (progress >= 1 && onComplete) {
         onComplete();
       }
     }
   });
   
-  return <points ref={pointsRef} />;
+  return <sprite ref={spriteRef} />;
 };
 
 export default ImpactEffect;

@@ -2,33 +2,62 @@ import { Raycaster, Vector3, Camera } from 'three';
 
 class ShootingSystem {
   private raycaster: Raycaster;
+  private lastShootTime: number = 0;
+  private shootCooldown: number = 100; // 100ms between shots
   
   constructor() {
     this.raycaster = new Raycaster();
-    this.raycaster.far = 100; // 최대 발사 거리
+    this.raycaster.far = 100; // Maximum shooting distance
   }
   
-  // 레이캐스트 수행 (조준점 방향으로 발사)
+  // Perform raycast (shoot in the direction of the crosshair)
   performRaycast(origin: Vector3, direction: Vector3) {
     this.raycaster.set(origin, direction);
     
-    // 여기서는 간단한 구현으로 레이캐스트 결과를 반환
-    // 실제 게임에서는 충돌 대상을 필터링하고 처리해야 함
+    // Add some random spread to make shooting more realistic
+    const spread = 0.01;
+    const randomDirection = direction.clone().add(
+      new Vector3(
+        (Math.random() - 0.5) * spread,
+        (Math.random() - 0.5) * spread,
+        (Math.random() - 0.5) * spread
+      )
+    ).normalize();
+    
+    this.raycaster.set(origin, randomDirection);
+    
+    // In a real game, you would check for collisions with objects in the scene
+    // For now, we'll just return a hit point at a fixed distance
+    const hitDistance = 20 + Math.random() * 10; // Random distance between 20-30 units
+    const hitPoint = new Vector3().copy(origin).add(
+      randomDirection.clone().multiplyScalar(hitDistance)
+    );
+    
     return {
-      point: new Vector3(0, 0, -10).add(origin) // 임시 타격 지점
+      point: hitPoint
     };
   }
   
-  // 발사 처리
-  shoot(camera: Camera) {
-    // 카메라 방향으로 레이캐스트
+  // Handle shooting with cooldown
+  shoot(camera: Camera): boolean {
+    const now = performance.now();
+    
+    // Check if we're still in cooldown
+    if (now - this.lastShootTime < this.shootCooldown) {
+      return false; // Still in cooldown, don't shoot
+    }
+    
+    // Update last shoot time
+    this.lastShootTime = now;
+    
+    // Get camera direction
     const direction = new Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
     
-    // 발사 이벤트 발생
+    // Trigger shoot event
     const shootEvent = new CustomEvent('shoot');
     window.dispatchEvent(shootEvent);
     
-    return this.performRaycast(camera.position, direction);
+    return true;
   }
 }
 
