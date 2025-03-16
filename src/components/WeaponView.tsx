@@ -43,7 +43,8 @@ const WeaponView = () => {
     baseRotationRecoil: new Euler(-0.05, 0, 0),
     positionRecoil: new Vector3(0, 0, 0),
     rotationRecoil: new Euler(0, 0, 0),
-    originalPosition: new Vector3(0.3, -0.3, -0.6),
+    // 화면 중앙에 위치하도록 조정된 기본 위치와 회전
+    originalPosition: new Vector3(0, -0.2, -0.5),
     originalRotation: new Euler(0, Math.PI, 0),
   });
   
@@ -62,7 +63,7 @@ const WeaponView = () => {
     const weaponModel = SkeletonUtils.clone(scene);
     
     // 모델 스케일 및 위치 조정
-    weaponModel.scale.set(0.01, 0.01, 0.01); // 모델 크기에 따라 조정 필요
+    weaponModel.scale.set(0.03, 0.03, 0.03); // 모델 크기 증가
     
     // 그림자 설정
     weaponModel.traverse((child) => {
@@ -276,7 +277,7 @@ const WeaponView = () => {
       {/* 무기 모델 */}
       <group 
         ref={weaponRef} 
-        position={[0.3, -0.3, -0.6]} 
+        position={[0, -0.2, -0.5]} // 화면 중앙에 위치하도록 조정
         rotation={[0, Math.PI, 0]}
         visible={true}
       />
@@ -286,7 +287,7 @@ const WeaponView = () => {
         <MuzzleFlash 
           position={muzzlePointRef.current.getWorldPosition 
             ? muzzlePointRef.current.getWorldPosition(new Vector3()) 
-            : new Vector3(0.3, -0.25, -1.1)}
+            : new Vector3(0, -0.15, -1.0)}
           onComplete={() => setShowMuzzleFlash(false)}
         />
       )}

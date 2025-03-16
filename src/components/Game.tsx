@@ -5,7 +5,7 @@ import { Physics } from '@react-three/rapier';
 import Player from './Player';
 import Level from './Level';
 import UI from './UI';
-import WeaponView from './WeaponView';
+import WeaponCanvas from './WeaponCanvas';
 import { useGameStore } from '../stores/gameStore';
 
 const Game = () => {
@@ -82,15 +82,15 @@ const Game = () => {
           <Level />
         </Physics>
         
-        {/* 무기 뷰 (1인칭 시점에서 보이는 무기) */}
-        {gameStarted && !gameOver && <WeaponView />}
-        
         {/* 포인터 락 컨트롤 */}
         <PointerLockControls 
           ref={setPointerLockControlsRef} 
           selector="#game-container"
         />
       </Canvas>
+      
+      {/* 무기 뷰 캔버스 (별도 레이어) */}
+      <WeaponCanvas />
       
       {/* UI 오버레이 */}
       <UI />
