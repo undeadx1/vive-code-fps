@@ -3,7 +3,7 @@ import { Raycaster, Vector3, Camera } from 'three';
 class ShootingSystem {
   private raycaster: Raycaster;
   private lastShootTime: number = 0;
-  private shootCooldown: number = 100; // 100ms between shots
+  private shootCooldown: number = 150; // 150ms between shots
   
   constructor() {
     this.raycaster = new Raycaster();
@@ -44,6 +44,7 @@ class ShootingSystem {
     
     // Check if we're still in cooldown
     if (now - this.lastShootTime < this.shootCooldown) {
+      console.log("ShootingSystem: 쿨다운 중입니다. 발사 불가.");
       return false; // Still in cooldown, don't shoot
     }
     
@@ -53,7 +54,7 @@ class ShootingSystem {
     // Get camera direction
     const direction = new Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
     
-    // Trigger shoot event
+    // Trigger shoot event - 중요: 이벤트는 한 번만 발생시킴
     const shootEvent = new CustomEvent('shoot');
     window.dispatchEvent(shootEvent);
     

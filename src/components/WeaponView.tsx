@@ -30,9 +30,12 @@ const WeaponView = () => {
   
   // 연사 관련 상태
   const [isFiring, setIsFiring] = useState(false);
-  const fireRateRef = useRef(150); // 연사 속도 (ms) - 조금 느리게 조정
+  const fireRateRef = useRef(150); // 연사 속도 (ms)
   const lastFireTimeRef = useRef(0);
   const fireIntervalRef = useRef(null);
+  
+  // 발사 이벤트 처리 중인지 추적하는 플래그
+  const isHandlingShootEventRef = useRef(false);
   
   // 3D 모델 로드
   const { scene } = useGLTF("https://agent8-games.verse8.io/assets/3D/weapons/ak47.glb");
@@ -49,8 +52,8 @@ const WeaponView = () => {
     baseRotationRecoil: new Euler(-0.05, 0, 0),
     positionRecoil: new Vector3(0, 0, 0),
     rotationRecoil: new Euler(0, 0, 0),
-    // 화면 오른쪽에 위치하도록 조정된 기본 위치와 회전
-    originalPosition: new Vector3(0.1, -0.2, -0.5), // x값을 1에서 0.1로 변경
+    // 무기는 원래 위치로 되돌리고 이펙트는 현재 위치 유지
+    originalPosition: new Vector3(0.1, -0.2, -0.5), // 무기 위치 유지
     originalRotation: new Euler(0, yRotation, 0), // Y축 100도 회전
   });
   
@@ -85,7 +88,8 @@ const WeaponView = () => {
     
     // AK-47 모델의 총구 위치를 정확하게 설정
     // 총구 위치를 모델의 앞쪽 끝으로 조정 (총구 방향으로 더 앞쪽)
-    muzzlePoint.position.set(0, 0.05, -0.8); // z값을 -0.5에서 -0.8로 변경하여 더 앞쪽으로 이동
+    // 총구 위치는 모델 기준으로 설정되므로 y값을 0.35로 증가시켜 이펙트가 더 위쪽에 표시되도록 함
+    muzzlePoint.position.set(0, 0.35, -0.8); // y값을 0.25에서 0.35로 변경하여 더 위쪽으로 이동
     
     weaponModel.add(muzzlePoint);
     muzzlePointRef.current = muzzlePoint;
@@ -105,86 +109,106 @@ const WeaponView = () => {
     console.log("무기 모델 생성 완료");
   }, [scene, yRotation]);
   
-  // 발사 처리
+  // 발사 처리 - 중요: 이 함수는 발사 이벤트를 처리하는 유일한 함수
   useEffect(() => {
     const handleShoot = () => {
-      if (gameOver || !gameStarted || ammo <= 0) return;
-      
-      // 탄약 감소
-      decreaseAmmo(1);
-      
-      // 머즐 플래시 표시
-      setShowMuzzleFlash(true);
-      setTimeout(() => setShowMuzzleFlash(false), 100);
-      
-      // 총구 월드 위치 계산
-      const muzzleWorldPosition = new Vector3();
-      if (muzzlePointRef.current && muzzlePointRef.current.getWorldPosition) {
-        muzzlePointRef.current.getWorldPosition(muzzleWorldPosition);
-      } else {
-        // 대체 위치 계산 - 총구 위치를 더 앞쪽으로 조정
-        muzzleWorldPosition.copy(weaponRef.current.position)
-          .add(new Vector3(0, 0.05, -0.8).applyQuaternion(weaponRef.current.quaternion));
+      // 이미 이벤트 처리 중이면 무시 (중복 방지)
+      if (isHandlingShootEventRef.current) {
+        return;
       }
       
-      // 레이캐스트 방향 (카메라 방향)
-      const direction = new Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
-      
-      // 레이캐스트 결과에 따라 총알 궤적 생성
-      const hit = shootingSystem.current.performRaycast(camera.position, direction);
-      if (hit) {
-        // 새 총알 궤적 추가 - 시작점을 총구 위치로 설정
-        const newTrail = {
-          id: Date.now(),
-          start: muzzleWorldPosition.clone(),
-          end: hit.point.clone(),
-        };
-        
-        setBulletTrails(trails => [...trails, newTrail]);
-        
-        // 200ms 후 총알 궤적 제거
-        setTimeout(() => {
-          setBulletTrails(trails => trails.filter(trail => trail.id !== newTrail.id));
-        }, 200);
-        
-        // 충돌 이펙트 추가 (총알 구멍)
-        const newImpact = {
-          id: Date.now() + 1, // 다른 ID 사용
-          position: hit.point.clone(),
-          normal: direction.clone().negate(), // 간단하게 카메라 방향의 반대로 설정
-        };
-        
-        setImpactEffects(effects => [...effects, newImpact]);
-        
-        // 5초 후 충돌 이펙트 제거
-        setTimeout(() => {
-          setImpactEffects(effects => effects.filter(effect => effect.id !== newImpact.id));
-        }, 5000);
+      // 게임 상태 확인
+      if (gameOver || !gameStarted || ammo <= 0) {
+        return;
       }
       
-      // 랜덤 반동 계산
-      const randomRange = 0.01;
-      const randomPos = new Vector3(
-        recoilRef.current.basePositionRecoil.x + (Math.random() * 2 - 1) * randomRange,
-        recoilRef.current.basePositionRecoil.y + (Math.random() * 2 - 1) * randomRange,
-        recoilRef.current.basePositionRecoil.z + (Math.random() * 2 - 1) * randomRange
-      );
+      // 이벤트 처리 중 플래그 설정
+      isHandlingShootEventRef.current = true;
       
-      const randomRot = new Euler(
-        recoilRef.current.baseRotationRecoil.x + (Math.random() * 2 - 1) * randomRange,
-        recoilRef.current.baseRotationRecoil.y + (Math.random() * 2 - 1) * randomRange,
-        recoilRef.current.baseRotationRecoil.z + (Math.random() * 2 - 1) * randomRange
-      );
-      
-      // 계산된 랜덤 반동 적용
-      recoilRef.current.positionRecoil.copy(randomPos);
-      recoilRef.current.rotationRecoil.copy(randomRot);
-      
-      // 반동 애니메이션 시작
-      recoilRef.current.active = true;
-      recoilRef.current.startTime = performance.now();
+      try {
+        // 탄약 감소 (1발씩만 감소)
+        decreaseAmmo(1);
+        
+        // 머즐 플래시 표시
+        setShowMuzzleFlash(true);
+        setTimeout(() => setShowMuzzleFlash(false), 100);
+        
+        // 총구 월드 위치 계산
+        const muzzleWorldPosition = new Vector3();
+        if (muzzlePointRef.current && muzzlePointRef.current.getWorldPosition) {
+          muzzlePointRef.current.getWorldPosition(muzzleWorldPosition);
+        } else {
+          // 대체 위치 계산 - 총구 위치를 더 앞쪽으로 조정
+          // 무기는 원래 위치로 되돌리고 이펙트는 현재 위치 유지하기 위해 y값 조정
+          muzzleWorldPosition.copy(weaponRef.current.position)
+            .add(new Vector3(0, 0.35, -0.8).applyQuaternion(weaponRef.current.quaternion));
+        }
+        
+        // 레이캐스트 방향 (카메라 방향)
+        const direction = new Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+        
+        // 레이캐스트 결과에 따라 총알 궤적 생성
+        const hit = shootingSystem.current.performRaycast(camera.position, direction);
+        if (hit) {
+          // 새 총알 궤적 추가 - 시작점을 총구 위치로 설정
+          const newTrail = {
+            id: Date.now(),
+            start: muzzleWorldPosition.clone(),
+            end: hit.point.clone(),
+          };
+          
+          setBulletTrails(trails => [...trails, newTrail]);
+          
+          // 200ms 후 총알 궤적 제거
+          setTimeout(() => {
+            setBulletTrails(trails => trails.filter(trail => trail.id !== newTrail.id));
+          }, 200);
+          
+          // 충돌 이펙트 추가 (총알 구멍)
+          const newImpact = {
+            id: Date.now() + 1, // 다른 ID 사용
+            position: hit.point.clone(),
+            normal: direction.clone().negate(), // 간단하게 카메라 방향의 반대로 설정
+          };
+          
+          setImpactEffects(effects => [...effects, newImpact]);
+          
+          // 5초 후 충돌 이펙트 제거
+          setTimeout(() => {
+            setImpactEffects(effects => effects.filter(effect => effect.id !== newImpact.id));
+          }, 5000);
+        }
+        
+        // 랜덤 반동 계산
+        const randomRange = 0.01;
+        const randomPos = new Vector3(
+          recoilRef.current.basePositionRecoil.x + (Math.random() * 2 - 1) * randomRange,
+          recoilRef.current.basePositionRecoil.y + (Math.random() * 2 - 1) * randomRange,
+          recoilRef.current.basePositionRecoil.z + (Math.random() * 2 - 1) * randomRange
+        );
+        
+        const randomRot = new Euler(
+          recoilRef.current.baseRotationRecoil.x + (Math.random() * 2 - 1) * randomRange,
+          recoilRef.current.baseRotationRecoil.y + (Math.random() * 2 - 1) * randomRange,
+          recoilRef.current.baseRotationRecoil.z + (Math.random() * 2 - 1) * randomRange
+        );
+        
+        // 계산된 랜덤 반동 적용
+        recoilRef.current.positionRecoil.copy(randomPos);
+        recoilRef.current.rotationRecoil.copy(randomRot);
+        
+        // 반동 애니메이션 시작
+        recoilRef.current.active = true;
+        recoilRef.current.startTime = performance.now();
+      } finally {
+        // 이벤트 처리 완료 후 플래그 해제 (다음 발사 허용)
+        setTimeout(() => {
+          isHandlingShootEventRef.current = false;
+        }, 100);
+      }
     };
     
+    // 발사 이벤트 리스너 등록
     window.addEventListener("shoot", handleShoot);
     
     return () => {
@@ -192,43 +216,49 @@ const WeaponView = () => {
     };
   }, [gameStarted, gameOver, ammo, decreaseAmmo, camera]);
   
-  // 연사 기능 구현 (개선된 버전)
+  // 연사 기능 구현 (단순화)
   useEffect(() => {
     // 이전 타이머 정리
     if (fireIntervalRef.current) {
-      clearInterval(fireIntervalRef.current);
+      clearTimeout(fireIntervalRef.current);
       fireIntervalRef.current = null;
     }
     
     // 발사 상태가 아니면 타이머 설정 안함
     if (!isFiring || !gameStarted || gameOver || ammo <= 0) return;
     
-    // 첫 발사는 즉시 처리
-    const now = performance.now();
-    if (now - lastFireTimeRef.current >= fireRateRef.current) {
-      shootingSystem.current.shoot(camera);
-      lastFireTimeRef.current = now;
-    }
-    
-    // 연사 타이머 설정
-    fireIntervalRef.current = setInterval(() => {
-      if (ammo <= 0 || !gameStarted || gameOver) {
-        // 탄약이 없거나 게임이 종료되면 타이머 정리
-        if (fireIntervalRef.current) {
-          clearInterval(fireIntervalRef.current);
-          fireIntervalRef.current = null;
-        }
+    // 연사 처리 함수
+    const handleAutoFire = () => {
+      const now = performance.now();
+      
+      // 쿨다운 확인
+      if (now - lastFireTimeRef.current < fireRateRef.current) {
+        // 아직 쿨다운 중이면 다음 체크 예약
+        fireIntervalRef.current = setTimeout(handleAutoFire, 10);
         return;
       }
       
-      // 발사 처리
-      shootingSystem.current.shoot(camera);
-    }, fireRateRef.current);
+      // 발사 시간 업데이트
+      lastFireTimeRef.current = now;
+      
+      // 발사 처리 (이미 이벤트 처리 중이 아닐 때만)
+      if (!isHandlingShootEventRef.current && ammo > 0) {
+        shootingSystem.current.shoot(camera);
+      }
+      
+      // 계속 발사 중이면 다음 발사 예약
+      if (isFiring && gameStarted && !gameOver && ammo > 0) {
+        fireIntervalRef.current = setTimeout(handleAutoFire, fireRateRef.current);
+      }
+    };
+    
+    // 첫 발사 예약
+    fireIntervalRef.current = setTimeout(handleAutoFire, 0);
     
     // 컴포넌트 언마운트 시 타이머 정리
     return () => {
       if (fireIntervalRef.current) {
-        clearInterval(fireIntervalRef.current);
+        clearTimeout(fireIntervalRef.current);
         fireIntervalRef.current = null;
       }
     };
@@ -309,7 +339,7 @@ const WeaponView = () => {
   useEffect(() => {
     return () => {
       if (fireIntervalRef.current) {
-        clearInterval(fireIntervalRef.current);
+        clearTimeout(fireIntervalRef.current);
         fireIntervalRef.current = null;
       }
     };
@@ -320,7 +350,7 @@ const WeaponView = () => {
       {/* 무기 모델 */}
       <group 
         ref={weaponRef} 
-        position={[0.1, -0.2, -0.5]} // x값을 1에서 0.1로 변경
+        position={[0.1, -0.2, -0.5]} // 무기 위치 유지
         rotation={[0, yRotation, 0]} // Y축 100도 회전
         visible={true}
       />
@@ -330,7 +360,7 @@ const WeaponView = () => {
         <MuzzleFlash 
           position={muzzlePointRef.current && muzzlePointRef.current.getWorldPosition 
             ? muzzlePointRef.current.getWorldPosition(new Vector3()) 
-            : new Vector3(0.1, -0.15, -1.3)} // 총구 위치로 조정 (z값을 -1.0에서 -1.3으로 변경)
+            : new Vector3(0.1, 0.15, -1.3)} // 이펙트 위치를 더 위로 조정 (0.05 -> 0.15)
           onComplete={() => setShowMuzzleFlash(false)}
         />
       )}
