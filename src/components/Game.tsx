@@ -1,48 +1,109 @@
-import { useEffect, useState, Suspense } from "react";
-import { useThree } from "@react-three/fiber";
-import { Sky, PointerLockControls } from "@react-three/drei";
-import Player from "./Player";
-import FpsMap from "./FpsMap";
-import Weapons from "./Weapons";
-import { useGameStore } from "../stores/gameStore";
+import React, { useEffect, useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { PointerLockControls, Sky } from '@react-three/drei';
+import { Physics } from '@react-three/rapier';
+import Player from './Player';
+import Level from './Level';
+import UI from './UI';
+import WeaponView from './WeaponView';
+import { useGameStore } from '../stores/gameStore';
 
 const Game = () => {
-  const { camera } = useThree();
-  const [controlsEnabled, setControlsEnabled] = useState(false);
-  const gameStarted = useGameStore((state) => state.gameStarted);
+  const [pointerLockControlsRef, setPointerLockControlsRef] = useState<any>(null);
   const setGameStarted = useGameStore((state) => state.setGameStarted);
-
+  const gameStarted = useGameStore((state) => state.gameStarted);
+  const gameOver = useGameStore((state) => state.gameOver);
+  
+  // 게임 시작 처리
   useEffect(() => {
-    const handleClick = () => {
-      if (!gameStarted) {
+    const handleStartGame = () => {
+      if (!gameStarted && !gameOver && pointerLockControlsRef) {
+        pointerLockControlsRef.lock();
         setGameStarted(true);
-        setControlsEnabled(true);
       }
     };
-
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
-  }, [gameStarted, setGameStarted]);
-
+    
+    // 게임 시작 이벤트 리스너 등록
+    window.addEventListener('click', handleStartGame);
+    
+    return () => {
+      window.removeEventListener('click', handleStartGame);
+    };
+  }, [gameStarted, gameOver, pointerLockControlsRef, setGameStarted]);
+  
+  // 포인터 락 상태 변경 감지
+  useEffect(() => {
+    if (!pointerLockControlsRef) return;
+    
+    const handleLockChange = () => {
+      if (!document.pointerLockElement && gameStarted && !gameOver) {
+        // 게임 중 포인터 락이 해제되면 일시 정지 처리
+        console.log('포인터 락 해제됨 - 일시 정지');
+      }
+    };
+    
+    document.addEventListener('pointerlockchange', handleLockChange);
+    
+    return () => {
+      document.removeEventListener('pointerlockchange', handleLockChange);
+    };
+  }, [pointerLockControlsRef, gameStarted, gameOver]);
+  
   return (
     <>
-      <Sky sunPosition={[100, 20, 100]} />
-      <ambientLight intensity={0.3} />
-      <directionalLight 
-        position={[10, 10, 5]} 
-        intensity={1} 
-        castShadow 
-        shadow-mapSize-width={2048} 
-        shadow-mapSize-height={2048}
-      />
+      <Canvas 
+        shadows 
+        camera={{ fov: 75, near: 0.1, far: 1000 }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%'
+        }}
+      >
+        <Sky sunPosition={[100, 20, 100]} />
+        <ambientLight intensity={0.5} />
+        <directionalLight
+          castShadow
+          position={[50, 50, 25]}
+          intensity={1.5}
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+          shadow-camera-far={100}
+          shadow-camera-left={-20}
+          shadow-camera-right={20}
+          shadow-camera-top={20}
+          shadow-camera-bottom={-20}
+        />
+        
+        <Physics gravity={[0, -9.81, 0]}>
+          <Player position={[0, 15, 0]} />
+          <Level />
+        </Physics>
+        
+        {/* 무기 뷰 (1인칭 시점에서 보이는 무기) */}
+        {gameStarted && !gameOver && <WeaponView />}
+        
+        {/* 포인터 락 컨트롤 */}
+        <PointerLockControls 
+          ref={setPointerLockControlsRef} 
+          selector="#game-container"
+        />
+      </Canvas>
       
-      <Suspense fallback={null}>
-        <FpsMap />
-      </Suspense>
-      <Player position={[0, 3, 0]} />
-      <Weapons />
+      {/* UI 오버레이 */}
+      <UI />
       
-      {controlsEnabled && <PointerLockControls />}
+      {/* 게임 컨테이너 (포인터 락 대상) */}
+      <div id="game-container" style={{ 
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        width: '100%', 
+        height: '100%', 
+        zIndex: -1 
+      }} />
     </>
   );
 };

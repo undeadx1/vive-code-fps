@@ -6,12 +6,13 @@ import { useKeyboardControls } from "../hooks/useKeyboardControls";
 import { useGameStore } from "../stores/gameStore";
 
 const SPEED = 5;
+const RUN_SPEED = 8;
 const JUMP_FORCE = 5;
 
-const Player = ({ position = [0, 3, 0] }) => {  // 시작 위치를 y=3으로 높임
+const Player = ({ position = [0, 15, 0] }) => {
   const playerRef = useRef(null);
   const { camera } = useThree();
-  const { moveForward, moveBackward, moveLeft, moveRight, jump, shoot } = useKeyboardControls();
+  const { moveForward, moveBackward, moveLeft, moveRight, jump, shoot, run } = useKeyboardControls();
   const health = useGameStore((state) => state.health);
   const decreaseHealth = useGameStore((state) => state.decreaseHealth);
   const gameOver = useGameStore((state) => state.gameOver);
@@ -21,11 +22,34 @@ const Player = ({ position = [0, 3, 0] }) => {  // 시작 위치를 y=3으로 �
   const velocity = useRef(new Vector3());
   const direction = useRef(new Vector3());
   
+  // 바닥 충돌 감지 상태
+  const isGrounded = useRef(false);
+  const lastJumpTime = useRef(0);
+  const jumpCooldown = 500; // 0.5초 쿨다운
+  
   useEffect(() => {
     if (health <= 0 && !gameOver) {
       setGameOver(true);
     }
   }, [health, gameOver, setGameOver]);
+
+  // 발사 처리
+  useEffect(() => {
+    const handleShoot = () => {
+      if (gameOver) return;
+      
+      // 발사 로직 (데미지 계산, 레이캐스팅 등)
+      // 여기서는 단순히 발사 이벤트만 처리
+      
+      // 발사 사운드 재생 등의 로직 추가 가능
+    };
+    
+    window.addEventListener("shoot", handleShoot);
+    
+    return () => {
+      window.removeEventListener("shoot", handleShoot);
+    };
+  }, [gameOver]);
 
   useFrame((state, delta) => {
     if (!playerRef.current || gameOver) return;
@@ -34,6 +58,9 @@ const Player = ({ position = [0, 3, 0] }) => {  // 시작 위치를 y=3으로 �
     
     // Get current velocity
     const currentVel = player.linvel();
+    
+    // 바닥 충돌 감지 (Y축 속도가 거의 0이면 바닥에 있다고 판단)
+    isGrounded.current = Math.abs(currentVel.y) < 0.1;
     
     // Reset direction
     direction.current.set(0, 0, 0);
@@ -56,7 +83,10 @@ const Player = ({ position = [0, 3, 0] }) => {  // 시작 위치를 y=3으로 �
     // Normalize direction if moving
     if (direction.current.lengthSq() > 0) {
       direction.current.normalize();
-      direction.current.multiplyScalar(SPEED);
+      
+      // Apply speed (run or walk)
+      const currentSpeed = run ? RUN_SPEED : SPEED;
+      direction.current.multiplyScalar(currentSpeed);
     }
     
     // Set new velocity
@@ -69,9 +99,12 @@ const Player = ({ position = [0, 3, 0] }) => {  // 시작 위치를 y=3으로 �
     // Apply velocity
     player.setLinvel(velocity.current);
     
-    // Handle jumping
-    if (jump && Math.abs(currentVel.y) < 0.1) {
+    // Handle jumping with cooldown
+    const now = Date.now();
+    if (jump && isGrounded.current && now - lastJumpTime.current > jumpCooldown) {
       player.applyImpulse({ x: 0, y: JUMP_FORCE, z: 0 });
+      lastJumpTime.current = now;
+      isGrounded.current = false;
     }
     
     // Update camera position to follow player
@@ -79,6 +112,12 @@ const Player = ({ position = [0, 3, 0] }) => {  // 시작 위치를 y=3으로 �
     camera.position.x = playerPosition.x;
     camera.position.y = playerPosition.y + 1.6; // Eye height
     camera.position.z = playerPosition.z;
+    
+    // 바닥 아래로 떨어지는 것 방지 (안전장치)
+    if (playerPosition.y < -10) {
+      player.setTranslation({ x: 0, y: 15, z: 0 });
+      player.setLinvel({ x: 0, y: 0, z: 0 });
+    }
   });
 
   return (
@@ -89,8 +128,14 @@ const Player = ({ position = [0, 3, 0] }) => {  // 시작 위치를 y=3으로 �
       type="dynamic"
       colliders={false}
       linearDamping={0.5}
+      friction={0.7}
+      restitution={0}
+      gravityScale={1}
+      lockRotations
+      mass={80} // 플레이어 질량 설정
+      ccd={true} // 연속 충돌 감지 활성화
     >
-      <CapsuleCollider args={[0.5, 0.5]} />
+      <CapsuleCollider args={[0.5, 0.5]} position={[0, 1, 0]} />
     </RigidBody>
   );
 };

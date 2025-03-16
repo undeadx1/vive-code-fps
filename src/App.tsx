@@ -1,22 +1,31 @@
-import { Suspense } from "react";
-import { Canvas } from "@react-three/fiber";
-import { Physics } from "@react-three/rapier";
-import Game from "./components/Game";
-import UI from "./components/UI";
-import LoadingScreen from "./components/LoadingScreen";
-import "./App.css";
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import Game from './components/Game';
+import LoadingScreen from './components/LoadingScreen';
+import WeaponCanvas from './components/WeaponCanvas';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    // 리소스 로딩 시뮬레이션
+    const loadingTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    
+    return () => clearTimeout(loadingTimer);
+  }, []);
+  
   return (
-    <div className="w-screen h-screen overflow-hidden">
-      <Suspense fallback={<LoadingScreen />}>
-        <Canvas shadows camera={{ fov: 75, position: [0, 1.6, 0] }}>
-          <Physics>
-            <Game />
-          </Physics>
-        </Canvas>
-        <UI />
-      </Suspense>
+    <div className="App">
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <>
+          <Game />
+          <WeaponCanvas />
+        </>
+      )}
     </div>
   );
 }

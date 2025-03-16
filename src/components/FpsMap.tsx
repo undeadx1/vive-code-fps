@@ -1,44 +1,40 @@
-import { useEffect, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
-import { Box3, Vector3 } from "three";
+import { useEffect } from "react";
 
 const FpsMap = () => {
-  const mapUrl = "https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb";
-  const { scene } = useGLTF(mapUrl);
-  const mapRef = useRef();
-
+  // 맵 모델 로드
+  const { scene } = useGLTF("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
+  
+  // 맵 모델 설정
   useEffect(() => {
-    // Configure shadow settings for all meshes in the scene
-    scene.traverse((child) => {
-      if (child.isObject3D) {
-        child.receiveShadow = true;
-        child.castShadow = true;
-      }
-    });
+    if (scene) {
+      scene.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+          
+          // 충돌 감지를 위한 설정
+          child.userData.isFloor = true;
+        }
+      });
+      console.log("맵 모델 로드 완료");
+    }
   }, [scene]);
-
-  // Calculate map center position for proper alignment
-  const boundingBox = new Box3().setFromObject(scene);
-  const center = new Vector3();
-  boundingBox.getCenter(center);
-  const adjustedPosition = new Vector3(-center.x, -center.y, -center.z);
-
+  
   return (
-    <group position={adjustedPosition}>
-      <RigidBody
-        type="fixed"
-        colliders="trimesh"
-        friction={1}
-        restitution={0}
-      >
-        <primitive object={scene} ref={mapRef} />
-      </RigidBody>
-    </group>
+    <RigidBody 
+      type="fixed" 
+      colliders="trimesh" 
+      friction={1}
+      restitution={0.2}
+    >
+      <primitive object={scene} />
+    </RigidBody>
   );
 };
 
-// Preload model to optimize initial loading
+// 맵 모델 미리 로드
 useGLTF.preload("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
 
 export default FpsMap;
