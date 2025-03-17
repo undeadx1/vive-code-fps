@@ -9,7 +9,7 @@ const UI = () => {
   const score = useGameStore((state) => state.score);
   const resetGame = useGameStore((state) => state.resetGame);
   
-  // 게임 시작 화면
+  // ê²ì ìì íë©´
   const renderStartScreen = () => {
     return (
       <div style={{
@@ -22,7 +22,7 @@ const UI = () => {
         fontSize: '24px',
         fontFamily: '"Rajdhani", sans-serif',
         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
-        pointerEvents: 'auto' // 시작 화면은 클릭 가능하도록 설정
+        pointerEvents: 'auto' // ìì íë©´ì í´ë¦­ ê°ë¥íëë¡ ì¤ì 
       }}>
         <h1 style={{ 
           fontSize: '48px', 
@@ -30,7 +30,7 @@ const UI = () => {
           textTransform: 'uppercase',
           letterSpacing: '3px',
           color: '#ff4d4d'
-        }}>FPS 게임</h1>
+        }}>FPS ê²ì</h1>
         <div style={{
           backgroundColor: 'rgba(0, 0, 0, 0.6)',
           padding: '20px 40px',
@@ -41,25 +41,25 @@ const UI = () => {
           <p style={{ 
             fontSize: '28px',
             marginBottom: '30px'
-          }}>클릭하여 게임 시작</p>
+          }}>í´ë¦­íì¬ ê²ì ìì</p>
           <div style={{ 
             fontSize: '18px',
             textAlign: 'left',
             marginBottom: '20px',
             color: '#cccccc'
           }}>
-            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>WASD</span>: 이동</p>
-            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>SHIFT</span>: 달리기</p>
-            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>마우스</span>: 시점 변경</p>
-            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>좌클릭</span>: 발사</p>
-            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>스페이스바</span>: 점프</p>
+            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>WASD</span>: ì´ë</p>
+            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>SHIFT</span>: ë¬ë¦¬ê¸°</p>
+            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>ë§ì°ì¤</span>: ìì  ë³ê²½</p>
+            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>ì¢í´ë¦­</span>: ë°ì¬</p>
+            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>ì¤íì´ì¤ë°</span>: ì í</p>
           </div>
         </div>
       </div>
     );
   };
   
-  // 게임 오버 화면
+  // ê²ì ì¤ë² íë©´
   const renderGameOverScreen = () => {
     return (
       <div style={{
@@ -72,7 +72,7 @@ const UI = () => {
         fontSize: '24px',
         fontFamily: '"Rajdhani", sans-serif',
         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
-        pointerEvents: 'auto' // 게임 오버 화면은 클릭 가능하도록 설정
+        pointerEvents: 'auto' // ê²ì ì¤ë² íë©´ì í´ë¦­ ê°ë¥íëë¡ ì¤ì 
       }}>
         <h1 style={{ 
           fontSize: '48px', 
@@ -80,7 +80,7 @@ const UI = () => {
           textTransform: 'uppercase',
           letterSpacing: '3px',
           color: '#ff4d4d'
-        }}>게임 오버</h1>
+        }}>ê²ì ì¤ë²</h1>
         <div style={{
           backgroundColor: 'rgba(0, 0, 0, 0.6)',
           padding: '20px 40px',
@@ -91,7 +91,7 @@ const UI = () => {
           <p style={{ 
             fontSize: '28px',
             marginBottom: '30px'
-          }}>점수: {score}</p>
+          }}>ì ì: {score}</p>
           <button 
             onClick={resetGame}
             style={{
@@ -119,14 +119,14 @@ const UI = () => {
               e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            다시 시작
+            ë¤ì ìì
           </button>
         </div>
       </div>
     );
   };
   
-  // 게임 중 HUD
+  // ê²ì ì¤ HUD
   const renderHUD = () => {
     return (
       <div style={{
@@ -142,7 +142,7 @@ const UI = () => {
         alignItems: 'flex-end',
         padding: '0 20px'
       }}>
-        {/* 왼쪽 정보 패널 (체력) */}
+        {/* ì¼ìª½ ì ë³´ í¨ë (ì²´ë ¥) */}
         <div style={{ 
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           padding: '15px',
@@ -150,7 +150,7 @@ const UI = () => {
           border: '1px solid rgba(255, 255, 255, 0.1)',
           minWidth: '250px'
         }}>
-          {/* 체력 바 */}
+          {/* ì²´ë ¥ ë° */}
           <div style={{ marginBottom: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <span style={{ 
@@ -159,7 +159,7 @@ const UI = () => {
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
                 letterSpacing: '1px'
-              }}>체력</span>
+              }}>ì²´ë ¥</span>
               <div style={{ 
                 width: '200px', 
                 height: '20px', 
@@ -184,18 +184,18 @@ const UI = () => {
             </div>
           </div>
           
-          {/* 점수 */}
+          {/* ì ì */}
           <div style={{ 
             fontSize: '20px',
             fontWeight: 'bold',
             color: '#ffcc00',
             textShadow: '0 0 5px rgba(255, 204, 0, 0.7)'
           }}>
-            점수: {score}
+            ì ì: {score}
           </div>
         </div>
         
-        {/* 오른쪽 정보 패널 (탄약) */}
+        {/* ì¤ë¥¸ìª½ ì ë³´ í¨ë (íì½) */}
         <div style={{ 
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           padding: '15px',
@@ -204,7 +204,7 @@ const UI = () => {
           minWidth: '200px',
           textAlign: 'right'
         }}>
-          {/* 탄약 */}
+          {/* íì½ */}
           <div style={{ 
             fontSize: '28px',
             fontWeight: 'bold',
@@ -219,7 +219,7 @@ const UI = () => {
     );
   };
   
-  // 조준점
+  // ì¡°ì¤ì 
   const renderCrosshair = () => {
     return (
       <div style={{
@@ -231,7 +231,7 @@ const UI = () => {
         height: '20px',
         pointerEvents: 'none'
       }}>
-        {/* 중심점 */}
+        {/* ì¤ì¬ì  */}
         <div style={{
           position: 'absolute',
           top: '50%',
@@ -243,7 +243,7 @@ const UI = () => {
           borderRadius: '50%'
         }} />
         
-        {/* 십자선 */}
+        {/* ì­ìì  */}
         <div style={{
           position: 'absolute',
           top: '50%',
@@ -281,7 +281,7 @@ const UI = () => {
           backgroundColor: 'rgba(255, 255, 255, 0.8)'
         }} />
         
-        {/* 외부 원 */}
+        {/* ì¸ë¶ ì */}
         <div style={{
           position: 'absolute',
           top: '50%',

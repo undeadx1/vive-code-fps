@@ -14,7 +14,7 @@ const Weapons = () => {
   const FIRE_RATE = 200; // ms between shots
   const [weaponLoaded, setWeaponLoaded] = useState(false);
   
-  // ë¬´ê¸° ëª¨ë¸ ë¡ë
+  // Ã«Â¬Â´ÃªÂ¸Â° Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¡ÂÃ«ÂÂ
   const { scene: weaponModel } = useGLTF("https://agent8-games.verse8.io/assets/3D/weapons/ak47.glb");
   
   const ammo = useGameStore((state) => state.ammo);
@@ -23,11 +23,11 @@ const Weapons = () => {
   const gameStarted = useGameStore((state) => state.gameStarted);
   const { shoot } = useKeyboardControls();
   
-  // ë°ë í¨ê³¼ë¥¼ ìí ìí
+  // Ã«Â°ÂÃ«ÂÂ Ã­ÂÂ¨ÃªÂ³Â¼Ã«Â¥Â¼ Ã¬ÂÂÃ­ÂÂ Ã¬ÂÂÃ­ÂÂ
   const recoilRef = useRef({
     active: false,
     startTime: 0,
-    duration: 100, // ë°ë ì§ì ìê° (ms)
+    duration: 100, // Ã«Â°ÂÃ«ÂÂ Ã¬Â§ÂÃ¬ÂÂ Ã¬ÂÂÃªÂ°Â (ms)
     basePositionRecoil: new Vector3(0, 0.05, 0.1),
     baseRotationRecoil: new Euler(-0.05, 0, 0),
     positionRecoil: new Vector3(0, 0, 0),
@@ -38,7 +38,7 @@ const Weapons = () => {
   
   useEffect(() => {
     if (weaponModel) {
-      // ë¬´ê¸° ëª¨ë¸ ì¤ì 
+      // Ã«Â¬Â´ÃªÂ¸Â° Ã«ÂªÂ¨Ã«ÂÂ¸ Ã¬ÂÂ¤Ã¬Â Â
       weaponModel.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -69,42 +69,42 @@ const Weapons = () => {
   useFrame((state, delta) => {
     if (!gunRef.current || !weaponLoaded) return;
     
-    // ì¹´ë©ë¼ ìì ë¬´ê¸° ìì¹ìí¤ê¸°
+    // Ã¬Â¹Â´Ã«Â©ÂÃ«ÂÂ¼ Ã¬ÂÂÃ¬ÂÂ Ã«Â¬Â´ÃªÂ¸Â° Ã¬ÂÂÃ¬Â¹ÂÃ¬ÂÂÃ­ÂÂ¤ÃªÂ¸Â°
     gunRef.current.position.set(
       camera.position.x,
       camera.position.y - 0.2,
       camera.position.z
     );
     
-    // ì¹´ë©ë¼ì ì¼ì¹íëë¡ ë¬´ê¸° íì 
+    // Ã¬Â¹Â´Ã«Â©ÂÃ«ÂÂ¼Ã¬ÂÂ Ã¬ÂÂ¼Ã¬Â¹ÂÃ­ÂÂÃ«ÂÂÃ«Â¡Â Ã«Â¬Â´ÃªÂ¸Â° Ã­ÂÂÃ¬Â Â
     gunRef.current.rotation.copy(camera.rotation);
     
-    // ì¹´ë©ë¼ ìì¼ë¡ ìì¹ ì¡°ì 
+    // Ã¬Â¹Â´Ã«Â©ÂÃ«ÂÂ¼ Ã¬ÂÂÃ¬ÂÂ¼Ã«Â¡Â Ã¬ÂÂÃ¬Â¹Â Ã¬Â¡Â°Ã¬Â Â
     const forward = new Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
     gunRef.current.position.add(forward.multiplyScalar(0.5));
     
-    // ì¤ë¥¸ìª½ì¼ë¡ ì½ê° ì¤íì
+    // Ã¬ÂÂ¤Ã«Â¥Â¸Ã¬ÂªÂ½Ã¬ÂÂ¼Ã«Â¡Â Ã¬ÂÂ½ÃªÂ°Â Ã¬ÂÂ¤Ã­ÂÂÃ¬ÂÂ
     const right = new Vector3(1, 0, 0).applyQuaternion(camera.quaternion);
     gunRef.current.position.add(right.multiplyScalar(0.2));
     
-    // ì½ê° ìëë¡ ì¤íì
+    // Ã¬ÂÂ½ÃªÂ°Â Ã¬ÂÂÃ«ÂÂÃ«Â¡Â Ã¬ÂÂ¤Ã­ÂÂÃ¬ÂÂ
     gunRef.current.position.y -= 0.1;
     
-    // ë°ë ì ëë©ì´ì ì²ë¦¬
+    // Ã«Â°ÂÃ«ÂÂ Ã¬ÂÂ Ã«ÂÂÃ«Â©ÂÃ¬ÂÂ´Ã¬ÂÂ Ã¬Â²ÂÃ«Â¦Â¬
     if (recoilRef.current.active) {
       const elapsed = performance.now() - recoilRef.current.startTime;
       const progress = Math.min(elapsed / recoilRef.current.duration, 1);
       
       if (progress < 1) {
-        // ë°ë ì ëë©ì´ì (ë¹ ë¥´ê² ìµë ë°ëì¼ë¡ ì´ë í ì²ì²í ìë ìë¦¬ë¡)
-        const recoilPhase = 0.3; // ë°ë ë¨ê³ ë¹ì¨
+        // Ã«Â°ÂÃ«ÂÂ Ã¬ÂÂ Ã«ÂÂÃ«Â©ÂÃ¬ÂÂ´Ã¬ÂÂ (Ã«Â¹Â Ã«Â¥Â´ÃªÂ²Â Ã¬ÂµÂÃ«ÂÂ Ã«Â°ÂÃ«ÂÂÃ¬ÂÂ¼Ã«Â¡Â Ã¬ÂÂ´Ã«ÂÂ Ã­ÂÂ Ã¬Â²ÂÃ¬Â²ÂÃ­ÂÂ Ã¬ÂÂÃ«ÂÂ Ã¬ÂÂÃ«Â¦Â¬Ã«Â¡Â)
+        const recoilPhase = 0.3; // Ã«Â°ÂÃ«ÂÂ Ã«ÂÂ¨ÃªÂ³Â Ã«Â¹ÂÃ¬ÂÂ¨
         
         if (progress < recoilPhase) {
-          // ë¹ ë¥´ê² ë°ë ì ì©
+          // Ã«Â¹Â Ã«Â¥Â´ÃªÂ²Â Ã«Â°ÂÃ«ÂÂ Ã¬Â ÂÃ¬ÂÂ©
           const recoilProgress = progress / recoilPhase;
           const easedProgress = 1 - Math.pow(1 - recoilProgress, 2);
           
-          // ë¬´ê¸° ëª¨ë¸ì ë°ë ì ì©
+          // Ã«Â¬Â´ÃªÂ¸Â° Ã«ÂªÂ¨Ã«ÂÂ¸Ã¬ÂÂ Ã«Â°ÂÃ«ÂÂ Ã¬Â ÂÃ¬ÂÂ©
           weaponModel.position.set(
             recoilRef.current.originalPosition.x + recoilRef.current.positionRecoil.x * easedProgress,
             recoilRef.current.originalPosition.y + recoilRef.current.positionRecoil.y * easedProgress,
@@ -117,7 +117,7 @@ const Weapons = () => {
             recoilRef.current.originalRotation.z + recoilRef.current.rotationRecoil.z * easedProgress
           );
         } else {
-          // ì²ì²í ìë ìë¦¬ë¡ ëìì´
+          // Ã¬Â²ÂÃ¬Â²ÂÃ­ÂÂ Ã¬ÂÂÃ«ÂÂ Ã¬ÂÂÃ«Â¦Â¬Ã«Â¡Â Ã«ÂÂÃ¬ÂÂÃ¬ÂÂ´
           const recoveryProgress = (progress - recoilPhase) / (1 - recoilPhase);
           const easedRecovery = Math.pow(recoveryProgress, 0.5);
           
@@ -134,14 +134,14 @@ const Weapons = () => {
           );
         }
       } else {
-        // ë°ë ì ëë©ì´ì ìë£, ìë ìì¹ë¡ ë³µê·
+        // Ã«Â°ÂÃ«ÂÂ Ã¬ÂÂ Ã«ÂÂÃ«Â©ÂÃ¬ÂÂ´Ã¬ÂÂ Ã¬ÂÂÃ«Â£Â, Ã¬ÂÂÃ«ÂÂ Ã¬ÂÂÃ¬Â¹ÂÃ«Â¡Â Ã«Â³ÂµÃªÂ·Â
         weaponModel.position.copy(recoilRef.current.originalPosition);
         weaponModel.rotation.copy(recoilRef.current.originalRotation);
         recoilRef.current.active = false;
       }
     }
     
-    // ë°ì¬ ì²ë¦¬
+    // Ã«Â°ÂÃ¬ÂÂ¬ Ã¬Â²ÂÃ«Â¦Â¬
     if ((mouseDown.current || shoot) && !gameOver && gameStarted && ammo > 0) {
       const now = Date.now();
       if (now - lastShot.current > FIRE_RATE) {
@@ -156,10 +156,10 @@ const Weapons = () => {
     
     decreaseAmmo(1);
     
-    // ì¹´ë©ë¼ìì ë ì´ìºì¤í° ì¤ì 
+    // Ã¬Â¹Â´Ã«Â©ÂÃ«ÂÂ¼Ã¬ÂÂÃ¬ÂÂ Ã«Â ÂÃ¬ÂÂ´Ã¬ÂºÂÃ¬ÂÂ¤Ã­ÂÂ° Ã¬ÂÂ¤Ã¬Â Â
     raycaster.current.setFromCamera({ x: 0, y: 0 }, camera);
     
-    // ëë¤ ë°ë ê³ì°
+    // Ã«ÂÂÃ«ÂÂ¤ Ã«Â°ÂÃ«ÂÂ ÃªÂ³ÂÃ¬ÂÂ°
     const randomRange = 0.01;
     const randomPos = new Vector3(
       recoilRef.current.basePositionRecoil.x + (Math.random() * 2 - 1) * randomRange,
@@ -173,16 +173,16 @@ const Weapons = () => {
       recoilRef.current.baseRotationRecoil.z + (Math.random() * 2 - 1) * randomRange
     );
     
-    // ê³ì°ë ëë¤ ë°ë ì ì©
+    // ÃªÂ³ÂÃ¬ÂÂ°Ã«ÂÂ Ã«ÂÂÃ«ÂÂ¤ Ã«Â°ÂÃ«ÂÂ Ã¬Â ÂÃ¬ÂÂ©
     recoilRef.current.positionRecoil.copy(randomPos);
     recoilRef.current.rotationRecoil.copy(randomRot);
     
-    // ë°ë ì ëë©ì´ì ìì
+    // Ã«Â°ÂÃ«ÂÂ Ã¬ÂÂ Ã«ÂÂÃ«Â©ÂÃ¬ÂÂ´Ã¬ÂÂ Ã¬ÂÂÃ¬ÂÂ
     recoilRef.current.active = true;
     recoilRef.current.startTime = performance.now();
   };
   
-  // ë¬´ê¸° ëª¨ë¸ ë¯¸ë¦¬ ë¡ë
+  // Ã«Â¬Â´ÃªÂ¸Â° Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¯Â¸Ã«Â¦Â¬ Ã«Â¡ÂÃ«ÂÂ
   useGLTF.preload("https://agent8-games.verse8.io/assets/3D/weapons/ak47.glb");
   
   return (

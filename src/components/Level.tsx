@@ -8,13 +8,13 @@ const Level = () => {
   const mapRef = useRef();
   const { scene } = useGLTF("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
   
-  // ë§µ ëª¨ë¸ í´ë¡  ìì± ë° ì¤ì 
+  // Ã«Â§Âµ Ã«ÂªÂ¨Ã«ÂÂ¸ Ã­ÂÂ´Ã«Â¡Â  Ã¬ÂÂÃ¬ÂÂ± Ã«Â°Â Ã¬ÂÂ¤Ã¬Â Â
   useEffect(() => {
     if (scene) {
-      // SkeletonUtilsë¥¼ ì¬ì©íì¬ ëª¨ë¸ í´ë¡  (ì ëë©ì´ìì´ ìë ê²½ì° íì)
+      // SkeletonUtilsÃ«Â¥Â¼ Ã¬ÂÂ¬Ã¬ÂÂ©Ã­ÂÂÃ¬ÂÂ¬ Ã«ÂªÂ¨Ã«ÂÂ¸ Ã­ÂÂ´Ã«Â¡Â  (Ã¬ÂÂ Ã«ÂÂÃ«Â©ÂÃ¬ÂÂ´Ã¬ÂÂÃ¬ÂÂ´ Ã¬ÂÂÃ«ÂÂ ÃªÂ²Â½Ã¬ÂÂ° Ã­ÂÂÃ¬ÂÂ)
       const clonedScene = SkeletonUtils.clone(scene);
       
-      // ê·¸ë¦¼ì ì¤ì 
+      // ÃªÂ·Â¸Ã«Â¦Â¼Ã¬ÂÂ Ã¬ÂÂ¤Ã¬Â Â
       clonedScene.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -22,36 +22,36 @@ const Level = () => {
         }
       });
       
-      // ë§µ ì°¸ì¡°ì í´ë¡ ë ì¬ ì¤ì 
+      // Ã«Â§Âµ Ã¬Â°Â¸Ã¬Â¡Â°Ã¬ÂÂ Ã­ÂÂ´Ã«Â¡Â Ã«ÂÂ Ã¬ÂÂ¬ Ã¬ÂÂ¤Ã¬Â Â
       if (mapRef.current) {
-        // ê¸°ì¡´ ìì ìì ì ê±°
+        // ÃªÂ¸Â°Ã¬Â¡Â´ Ã¬ÂÂÃ¬ÂÂ Ã¬ÂÂÃ¬ÂÂ Ã¬Â ÂÃªÂ±Â°
         while (mapRef.current.children.length > 0) {
           mapRef.current.remove(mapRef.current.children[0]);
         }
         
-        // ì ì¬ ì¶ê°
+        // Ã¬ÂÂ Ã¬ÂÂ¬ Ã¬Â¶ÂÃªÂ°Â
         mapRef.current.add(clonedScene);
       }
     }
   }, [scene]);
 
-  // ë§µ ì¤ì¬ ê³ì°
+  // Ã«Â§Âµ Ã¬Â¤ÂÃ¬ÂÂ¬ ÃªÂ³ÂÃ¬ÂÂ°
   const mapCenter = useRef(new Vector3(0, 0, 0));
   
   useEffect(() => {
     if (scene) {
-      // ë§µì ë°ì´ë© ë°ì¤ ê³ì°
+      // Ã«Â§ÂµÃ¬ÂÂ Ã«Â°ÂÃ¬ÂÂ´Ã«ÂÂ© Ã«Â°ÂÃ¬ÂÂ¤ ÃªÂ³ÂÃ¬ÂÂ°
       const boundingBox = new Box3().setFromObject(scene);
       boundingBox.getCenter(mapCenter.current);
       
-      console.log("ë§µ ì¤ì¬ ìì¹:", mapCenter.current);
-      console.log("ë§µ í¬ê¸°:", boundingBox.getSize(new Vector3()));
+      console.log("Ã«Â§Âµ Ã¬Â¤ÂÃ¬ÂÂ¬ Ã¬ÂÂÃ¬Â¹Â:", mapCenter.current);
+      console.log("Ã«Â§Âµ Ã­ÂÂ¬ÃªÂ¸Â°:", boundingBox.getSize(new Vector3()));
     }
   }, [scene]);
 
   return (
     <group>
-      {/* 3D ë§µ ëª¨ë¸ */}
+      {/* 3D Ã«Â§Âµ Ã«ÂªÂ¨Ã«ÂÂ¸ */}
       <RigidBody 
         type="fixed" 
         colliders="trimesh"
@@ -61,7 +61,7 @@ const Level = () => {
         <group ref={mapRef} />
       </RigidBody>
       
-      {/* ì¶ê° ë°ë¥ ì¶©ëì²´ (ìì ì¥ì¹) */}
+      {/* Ã¬Â¶ÂÃªÂ°Â Ã«Â°ÂÃ«ÂÂ¥ Ã¬Â¶Â©Ã«ÂÂÃ¬Â²Â´ (Ã¬ÂÂÃ¬Â ÂÃ¬ÂÂ¥Ã¬Â¹Â) */}
       <RigidBody 
         type="fixed" 
         position={[0, -0.5, 0]}
@@ -77,7 +77,7 @@ const Level = () => {
   );
 };
 
-// ëª¨ë¸ íë¦¬ë¡ë
+// Ã«ÂªÂ¨Ã«ÂÂ¸ Ã­ÂÂÃ«Â¦Â¬Ã«Â¡ÂÃ«ÂÂ
 useGLTF.preload("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
 
 export default Level;

@@ -14,7 +14,7 @@ const Game = () => {
   const gameStarted = useGameStore((state) => state.gameStarted);
   const gameOver = useGameStore((state) => state.gameOver);
   
-  // 게임 시작 처리
+  // ê²ì ìì ì²ë¦¬
   useEffect(() => {
     const handleStartGame = () => {
       if (!gameStarted && !gameOver && pointerLockControlsRef) {
@@ -23,7 +23,7 @@ const Game = () => {
       }
     };
     
-    // 게임 시작 이벤트 리스너 등록
+    // ê²ì ìì ì´ë²¤í¸ ë¦¬ì¤ë ë±ë¡
     window.addEventListener('click', handleStartGame);
     
     return () => {
@@ -31,14 +31,14 @@ const Game = () => {
     };
   }, [gameStarted, gameOver, pointerLockControlsRef, setGameStarted]);
   
-  // 포인터 락 상태 변경 감지
+  // í¬ì¸í° ë½ ìí ë³ê²½ ê°ì§
   useEffect(() => {
     if (!pointerLockControlsRef) return;
     
     const handleLockChange = () => {
       if (!document.pointerLockElement && gameStarted && !gameOver) {
-        // 게임 중 포인터 락이 해제되면 일시 정지 처리
-        console.log('포인터 락 해제됨 - 일시 정지');
+        // ê²ì ì¤ í¬ì¸í° ë½ì´ í´ì ëë©´ ì¼ì ì ì§ ì²ë¦¬
+        console.log('í¬ì¸í° ë½ í´ì ë¨ - ì¼ì ì ì§');
       }
     };
     
@@ -51,7 +51,7 @@ const Game = () => {
   
   return (
     <>
-      {/* 메인 게임 캔버스 */}
+      {/* ë©ì¸ ê²ì ìºë²ì¤ */}
       <Canvas 
         shadows 
         camera={{ fov: 75, near: 0.1, far: 1000 }}
@@ -61,7 +61,7 @@ const Game = () => {
           left: 0,
           width: '100%',
           height: '100%',
-          zIndex: 1 // 명시적으로 zIndex 설정
+          zIndex: 1 // ëªìì ì¼ë¡ zIndex ì¤ì 
         }}
       >
         <Sky sunPosition={[100, 20, 100]} />
@@ -84,30 +84,30 @@ const Game = () => {
           <Level />
         </Physics>
         
-        {/* 포인터 락 컨트롤 */}
+        {/* í¬ì¸í° ë½ ì»¨í¸ë¡¤ */}
         <PointerLockControls 
           ref={setPointerLockControlsRef} 
           selector="#game-container"
         />
       </Canvas>
       
-      {/* 무기 뷰 캔버스 (별도 레이어) */}
+      {/* ë¬´ê¸° ë·° ìºë²ì¤ (ë³ë ë ì´ì´) */}
       <WeaponCanvas />
       
-      {/* UI 오버레이 - 가장 높은 zIndex로 설정 */}
+      {/* UI ì¤ë²ë ì´ - ê°ì¥ ëì zIndexë¡ ì¤ì  */}
       <div style={{ 
         position: 'absolute', 
         top: 0, 
         left: 0, 
         width: '100%', 
         height: '100%', 
-        zIndex: 10, // UI를 가장 앞에 표시하기 위해 높은 zIndex 설정
-        pointerEvents: 'none' // UI를 통과하여 게임 조작 가능하도록 설정
+        zIndex: 10, // UIë¥¼ ê°ì¥ ìì íìíê¸° ìí´ ëì zIndex ì¤ì 
+        pointerEvents: 'none' // UIë¥¼ íµê³¼íì¬ ê²ì ì¡°ì ê°ë¥íëë¡ ì¤ì 
       }}>
         <UI />
       </div>
       
-      {/* 게임 컨테이너 (포인터 락 대상) */}
+      {/* ê²ì ì»¨íì´ë (í¬ì¸í° ë½ ëì) */}
       <div id="game-container" style={{ 
         position: 'absolute', 
         top: 0, 

@@ -3,10 +3,10 @@ import { RigidBody } from "@react-three/rapier";
 import { useEffect } from "react";
 
 const FpsMap = () => {
-  // ë§µ ëª¨ë¸ ë¡ë
+  // Ã«Â§Âµ Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¡ÂÃ«ÂÂ
   const { scene } = useGLTF("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
   
-  // ë§µ ëª¨ë¸ ì¤ì 
+  // Ã«Â§Âµ Ã«ÂªÂ¨Ã«ÂÂ¸ Ã¬ÂÂ¤Ã¬Â Â
   useEffect(() => {
     if (scene) {
       scene.traverse((child) => {
@@ -14,11 +14,11 @@ const FpsMap = () => {
           child.castShadow = true;
           child.receiveShadow = true;
           
-          // ì¶©ë ê°ì§ë¥¼ ìí ì¤ì 
+          // Ã¬Â¶Â©Ã«ÂÂ ÃªÂ°ÂÃ¬Â§ÂÃ«Â¥Â¼ Ã¬ÂÂÃ­ÂÂ Ã¬ÂÂ¤Ã¬Â Â
           child.userData.isFloor = true;
         }
       });
-      console.log("ë§µ ëª¨ë¸ ë¡ë ìë£");
+      console.log("Ã«Â§Âµ Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¡ÂÃ«ÂÂ Ã¬ÂÂÃ«Â£Â");
     }
   }, [scene]);
   
@@ -34,7 +34,7 @@ const FpsMap = () => {
   );
 };
 
-// ë§µ ëª¨ë¸ ë¯¸ë¦¬ ë¡ë
+// Ã«Â§Âµ Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¯Â¸Ã«Â¦Â¬ Ã«Â¡ÂÃ«ÂÂ
 useGLTF.preload("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
 
 export default FpsMap;

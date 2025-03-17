@@ -8,7 +8,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    // ë¦¬ìì¤ ë¡ë© ìë®¬ë ì´ì
+    // Ã«Â¦Â¬Ã¬ÂÂÃ¬ÂÂ¤ Ã«Â¡ÂÃ«ÂÂ© Ã¬ÂÂÃ«Â®Â¬Ã«Â ÂÃ¬ÂÂ´Ã¬ÂÂ
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);

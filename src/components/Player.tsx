@@ -22,10 +22,10 @@ const Player = ({ position = [0, 15, 0] }) => {
   const velocity = useRef(new Vector3());
   const direction = useRef(new Vector3());
   
-  // ë°ë¥ ì¶©ë ê°ì§ ìí
+  // Ã«Â°ÂÃ«ÂÂ¥ Ã¬Â¶Â©Ã«ÂÂ ÃªÂ°ÂÃ¬Â§Â Ã¬ÂÂÃ­ÂÂ
   const isGrounded = useRef(false);
   const lastJumpTime = useRef(0);
-  const jumpCooldown = 500; // 0.5ì´ ì¿¨ë¤ì´
+  const jumpCooldown = 500; // 0.5Ã¬Â´Â Ã¬Â¿Â¨Ã«ÂÂ¤Ã¬ÂÂ´
   
   useEffect(() => {
     if (health <= 0 && !gameOver) {
@@ -33,15 +33,15 @@ const Player = ({ position = [0, 15, 0] }) => {
     }
   }, [health, gameOver, setGameOver]);
 
-  // ë°ì¬ ì²ë¦¬
+  // Ã«Â°ÂÃ¬ÂÂ¬ Ã¬Â²ÂÃ«Â¦Â¬
   useEffect(() => {
     const handleShoot = () => {
       if (gameOver) return;
       
-      // ë°ì¬ ë¡ì§ (ë°ë¯¸ì§ ê³ì°, ë ì´ìºì¤í ë±)
-      // ì¬ê¸°ìë ë¨ìí ë°ì¬ ì´ë²¤í¸ë§ ì²ë¦¬
+      // Ã«Â°ÂÃ¬ÂÂ¬ Ã«Â¡ÂÃ¬Â§Â (Ã«ÂÂ°Ã«Â¯Â¸Ã¬Â§Â ÃªÂ³ÂÃ¬ÂÂ°, Ã«Â ÂÃ¬ÂÂ´Ã¬ÂºÂÃ¬ÂÂ¤Ã­ÂÂ Ã«ÂÂ±)
+      // Ã¬ÂÂ¬ÃªÂ¸Â°Ã¬ÂÂÃ«ÂÂ Ã«ÂÂ¨Ã¬ÂÂÃ­ÂÂ Ã«Â°ÂÃ¬ÂÂ¬ Ã¬ÂÂ´Ã«Â²Â¤Ã­ÂÂ¸Ã«Â§Â Ã¬Â²ÂÃ«Â¦Â¬
       
-      // ë°ì¬ ì¬ì´ë ì¬ì ë±ì ë¡ì§ ì¶ê° ê°ë¥
+      // Ã«Â°ÂÃ¬ÂÂ¬ Ã¬ÂÂ¬Ã¬ÂÂ´Ã«ÂÂ Ã¬ÂÂ¬Ã¬ÂÂ Ã«ÂÂ±Ã¬ÂÂ Ã«Â¡ÂÃ¬Â§Â Ã¬Â¶ÂÃªÂ°Â ÃªÂ°ÂÃ«ÂÂ¥
     };
     
     window.addEventListener("shoot", handleShoot);
@@ -59,7 +59,7 @@ const Player = ({ position = [0, 15, 0] }) => {
     // Get current velocity
     const currentVel = player.linvel();
     
-    // ë°ë¥ ì¶©ë ê°ì§ (Yì¶ ìëê° ê±°ì 0ì´ë©´ ë°ë¥ì ìë¤ê³  íë¨)
+    // Ã«Â°ÂÃ«ÂÂ¥ Ã¬Â¶Â©Ã«ÂÂ ÃªÂ°ÂÃ¬Â§Â (YÃ¬Â¶Â Ã¬ÂÂÃ«ÂÂÃªÂ°Â ÃªÂ±Â°Ã¬ÂÂ 0Ã¬ÂÂ´Ã«Â©Â´ Ã«Â°ÂÃ«ÂÂ¥Ã¬ÂÂ Ã¬ÂÂÃ«ÂÂ¤ÃªÂ³Â  Ã­ÂÂÃ«ÂÂ¨)
     isGrounded.current = Math.abs(currentVel.y) < 0.1;
     
     // Reset direction
@@ -113,7 +113,7 @@ const Player = ({ position = [0, 15, 0] }) => {
     camera.position.y = playerPosition.y + 1.6; // Eye height
     camera.position.z = playerPosition.z;
     
-    // ë°ë¥ ìëë¡ ë¨ì´ì§ë ê² ë°©ì§ (ìì ì¥ì¹)
+    // Ã«Â°ÂÃ«ÂÂ¥ Ã¬ÂÂÃ«ÂÂÃ«Â¡Â Ã«ÂÂ¨Ã¬ÂÂ´Ã¬Â§ÂÃ«ÂÂ ÃªÂ²Â Ã«Â°Â©Ã¬Â§Â (Ã¬ÂÂÃ¬Â ÂÃ¬ÂÂ¥Ã¬Â¹Â)
     if (playerPosition.y < -10) {
       player.setTranslation({ x: 0, y: 15, z: 0 });
       player.setLinvel({ x: 0, y: 0, z: 0 });
@@ -132,8 +132,8 @@ const Player = ({ position = [0, 15, 0] }) => {
       restitution={0}
       gravityScale={1}
       lockRotations
-      mass={80} // íë ì´ì´ ì§ë ì¤ì 
-      ccd={true} // ì°ì ì¶©ë ê°ì§ íì±í
+      mass={80} // Ã­ÂÂÃ«Â ÂÃ¬ÂÂ´Ã¬ÂÂ´ Ã¬Â§ÂÃ«ÂÂ Ã¬ÂÂ¤Ã¬Â Â
+      ccd={true} // Ã¬ÂÂ°Ã¬ÂÂ Ã¬Â¶Â©Ã«ÂÂ ÃªÂ°ÂÃ¬Â§Â Ã­ÂÂÃ¬ÂÂ±Ã­ÂÂ
     >
       <CapsuleCollider args={[0.5, 0.5]} position={[0, 1, 0]} />
     </RigidBody>

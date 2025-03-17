@@ -13,7 +13,7 @@ export const useKeyboardControls = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // í¤ ìë ¥ ì²ë¦¬
+      // Ã­ÂÂ¤ Ã¬ÂÂÃ«Â Â¥ Ã¬Â²ÂÃ«Â¦Â¬
       if (e.code === 'KeyW' || e.code === 'ArrowUp') {
         setKeys(keys => ({ ...keys, moveForward: true }));
       }
@@ -35,7 +35,7 @@ export const useKeyboardControls = () => {
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      // í¤ í´ì  ì²ë¦¬
+      // Ã­ÂÂ¤ Ã­ÂÂ´Ã¬Â Â Ã¬Â²ÂÃ«Â¦Â¬
       if (e.code === 'KeyW' || e.code === 'ArrowUp') {
         setKeys(keys => ({ ...keys, moveForward: false }));
       }
@@ -57,26 +57,26 @@ export const useKeyboardControls = () => {
     };
 
     const handleMouseDown = (e: MouseEvent) => {
-      // ë§ì°ì¤ ì¼ìª½ ë²í¼ í´ë¦­ ì²ë¦¬
+      // Ã«Â§ÂÃ¬ÂÂ°Ã¬ÂÂ¤ Ã¬ÂÂ¼Ã¬ÂªÂ½ Ã«Â²ÂÃ­ÂÂ¼ Ã­ÂÂ´Ã«Â¦Â­ Ã¬Â²ÂÃ«Â¦Â¬
       if (e.button === 0) {
         setKeys(keys => ({ ...keys, shoot: true }));
       }
     };
 
     const handleMouseUp = (e: MouseEvent) => {
-      // ë§ì°ì¤ ì¼ìª½ ë²í¼ í´ì  ì²ë¦¬
+      // Ã«Â§ÂÃ¬ÂÂ°Ã¬ÂÂ¤ Ã¬ÂÂ¼Ã¬ÂªÂ½ Ã«Â²ÂÃ­ÂÂ¼ Ã­ÂÂ´Ã¬Â Â Ã¬Â²ÂÃ«Â¦Â¬
       if (e.button === 0) {
         setKeys(keys => ({ ...keys, shoot: false }));
       }
     };
 
-    // ì´ë²¤í¸ ë¦¬ì¤ë ë±ë¡
+    // Ã¬ÂÂ´Ã«Â²Â¤Ã­ÂÂ¸ Ã«Â¦Â¬Ã¬ÂÂ¤Ã«ÂÂ Ã«ÂÂ±Ã«Â¡Â
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
 
-    // ì»´í¬ëí¸ ì¸ë§ì´í¸ ì ì´ë²¤í¸ ë¦¬ì¤ë ì ê±°
+    // Ã¬Â»Â´Ã­ÂÂ¬Ã«ÂÂÃ­ÂÂ¸ Ã¬ÂÂ¸Ã«Â§ÂÃ¬ÂÂ´Ã­ÂÂ¸ Ã¬ÂÂ Ã¬ÂÂ´Ã«Â²Â¤Ã­ÂÂ¸ Ã«Â¦Â¬Ã¬ÂÂ¤Ã«ÂÂ Ã¬Â ÂÃªÂ±Â°
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
