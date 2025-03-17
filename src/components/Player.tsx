@@ -22,10 +22,10 @@ const Player = ({ position = [0, 15, 0] }) => {
   const velocity = useRef(new Vector3());
   const direction = useRef(new Vector3());
   
-  // 바닥 충돌 감지 상태
+  // ë°ë¥ ì¶©ë ê°ì§ ìí
   const isGrounded = useRef(false);
   const lastJumpTime = useRef(0);
-  const jumpCooldown = 500; // 0.5초 쿨다운
+  const jumpCooldown = 500; // 0.5ì´ ì¿¨ë¤ì´
   
   useEffect(() => {
     if (health <= 0 && !gameOver) {
@@ -33,15 +33,15 @@ const Player = ({ position = [0, 15, 0] }) => {
     }
   }, [health, gameOver, setGameOver]);
 
-  // 발사 처리
+  // ë°ì¬ ì²ë¦¬
   useEffect(() => {
     const handleShoot = () => {
       if (gameOver) return;
       
-      // 발사 로직 (데미지 계산, 레이캐스팅 등)
-      // 여기서는 단순히 발사 이벤트만 처리
+      // ë°ì¬ ë¡ì§ (ë°ë¯¸ì§ ê³ì°, ë ì´ìºì¤í ë±)
+      // ì¬ê¸°ìë ë¨ìí ë°ì¬ ì´ë²¤í¸ë§ ì²ë¦¬
       
-      // 발사 사운드 재생 등의 로직 추가 가능
+      // ë°ì¬ ì¬ì´ë ì¬ì ë±ì ë¡ì§ ì¶ê° ê°ë¥
     };
     
     window.addEventListener("shoot", handleShoot);
@@ -59,7 +59,7 @@ const Player = ({ position = [0, 15, 0] }) => {
     // Get current velocity
     const currentVel = player.linvel();
     
-    // 바닥 충돌 감지 (Y축 속도가 거의 0이면 바닥에 있다고 판단)
+    // ë°ë¥ ì¶©ë ê°ì§ (Yì¶ ìëê° ê±°ì 0ì´ë©´ ë°ë¥ì ìë¤ê³  íë¨)
     isGrounded.current = Math.abs(currentVel.y) < 0.1;
     
     // Reset direction
@@ -113,7 +113,7 @@ const Player = ({ position = [0, 15, 0] }) => {
     camera.position.y = playerPosition.y + 1.6; // Eye height
     camera.position.z = playerPosition.z;
     
-    // 바닥 아래로 떨어지는 것 방지 (안전장치)
+    // ë°ë¥ ìëë¡ ë¨ì´ì§ë ê² ë°©ì§ (ìì ì¥ì¹)
     if (playerPosition.y < -10) {
       player.setTranslation({ x: 0, y: 15, z: 0 });
       player.setLinvel({ x: 0, y: 0, z: 0 });
@@ -132,8 +132,8 @@ const Player = ({ position = [0, 15, 0] }) => {
       restitution={0}
       gravityScale={1}
       lockRotations
-      mass={80} // 플레이어 질량 설정
-      ccd={true} // 연속 충돌 감지 활성화
+      mass={80} // íë ì´ì´ ì§ë ì¤ì 
+      ccd={true} // ì°ì ì¶©ë ê°ì§ íì±í
     >
       <CapsuleCollider args={[0.5, 0.5]} position={[0, 1, 0]} />
     </RigidBody>

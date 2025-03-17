@@ -8,13 +8,13 @@ const Level = () => {
   const mapRef = useRef();
   const { scene } = useGLTF("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
   
-  // 맵 모델 클론 생성 및 설정
+  // ë§µ ëª¨ë¸ í´ë¡  ìì± ë° ì¤ì 
   useEffect(() => {
     if (scene) {
-      // SkeletonUtils를 사용하여 모델 클론 (애니메이션이 있는 경우 필요)
+      // SkeletonUtilsë¥¼ ì¬ì©íì¬ ëª¨ë¸ í´ë¡  (ì ëë©ì´ìì´ ìë ê²½ì° íì)
       const clonedScene = SkeletonUtils.clone(scene);
       
-      // 그림자 설정
+      // ê·¸ë¦¼ì ì¤ì 
       clonedScene.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -22,36 +22,36 @@ const Level = () => {
         }
       });
       
-      // 맵 참조에 클론된 씬 설정
+      // ë§µ ì°¸ì¡°ì í´ë¡ ë ì¬ ì¤ì 
       if (mapRef.current) {
-        // 기존 자식 요소 제거
+        // ê¸°ì¡´ ìì ìì ì ê±°
         while (mapRef.current.children.length > 0) {
           mapRef.current.remove(mapRef.current.children[0]);
         }
         
-        // 새 씬 추가
+        // ì ì¬ ì¶ê°
         mapRef.current.add(clonedScene);
       }
     }
   }, [scene]);
 
-  // 맵 중심 계산
+  // ë§µ ì¤ì¬ ê³ì°
   const mapCenter = useRef(new Vector3(0, 0, 0));
   
   useEffect(() => {
     if (scene) {
-      // 맵의 바운딩 박스 계산
+      // ë§µì ë°ì´ë© ë°ì¤ ê³ì°
       const boundingBox = new Box3().setFromObject(scene);
       boundingBox.getCenter(mapCenter.current);
       
-      console.log("맵 중심 위치:", mapCenter.current);
-      console.log("맵 크기:", boundingBox.getSize(new Vector3()));
+      console.log("ë§µ ì¤ì¬ ìì¹:", mapCenter.current);
+      console.log("ë§µ í¬ê¸°:", boundingBox.getSize(new Vector3()));
     }
   }, [scene]);
 
   return (
     <group>
-      {/* 3D 맵 모델 */}
+      {/* 3D ë§µ ëª¨ë¸ */}
       <RigidBody 
         type="fixed" 
         colliders="trimesh"
@@ -61,7 +61,7 @@ const Level = () => {
         <group ref={mapRef} />
       </RigidBody>
       
-      {/* 추가 바닥 충돌체 (안전장치) */}
+      {/* ì¶ê° ë°ë¥ ì¶©ëì²´ (ìì ì¥ì¹) */}
       <RigidBody 
         type="fixed" 
         position={[0, -0.5, 0]}
@@ -77,7 +77,7 @@ const Level = () => {
   );
 };
 
-// 모델 프리로드
+// ëª¨ë¸ íë¦¬ë¡ë
 useGLTF.preload("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
 
 export default Level;

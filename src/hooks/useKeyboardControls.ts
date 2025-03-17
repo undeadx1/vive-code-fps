@@ -13,7 +13,7 @@ export const useKeyboardControls = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // 키 입력 처리
+      // í¤ ìë ¥ ì²ë¦¬
       if (e.code === 'KeyW' || e.code === 'ArrowUp') {
         setKeys(keys => ({ ...keys, moveForward: true }));
       }
@@ -35,7 +35,7 @@ export const useKeyboardControls = () => {
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      // 키 해제 처리
+      // í¤ í´ì  ì²ë¦¬
       if (e.code === 'KeyW' || e.code === 'ArrowUp') {
         setKeys(keys => ({ ...keys, moveForward: false }));
       }
@@ -57,26 +57,26 @@ export const useKeyboardControls = () => {
     };
 
     const handleMouseDown = (e: MouseEvent) => {
-      // 마우스 왼쪽 버튼 클릭 처리
+      // ë§ì°ì¤ ì¼ìª½ ë²í¼ í´ë¦­ ì²ë¦¬
       if (e.button === 0) {
         setKeys(keys => ({ ...keys, shoot: true }));
       }
     };
 
     const handleMouseUp = (e: MouseEvent) => {
-      // 마우스 왼쪽 버튼 해제 처리
+      // ë§ì°ì¤ ì¼ìª½ ë²í¼ í´ì  ì²ë¦¬
       if (e.button === 0) {
         setKeys(keys => ({ ...keys, shoot: false }));
       }
     };
 
-    // 이벤트 리스너 등록
+    // ì´ë²¤í¸ ë¦¬ì¤ë ë±ë¡
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
 
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    // ì»´í¬ëí¸ ì¸ë§ì´í¸ ì ì´ë²¤í¸ ë¦¬ì¤ë ì ê±°
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);

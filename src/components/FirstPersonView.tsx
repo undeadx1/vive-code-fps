@@ -10,13 +10,13 @@ const FirstPersonView = () => {
   const gameStarted = useGameStore((state) => state.gameStarted);
   const gameOver = useGameStore((state) => state.gameOver);
   
-  // 무기 모델 로드
+  // ë¬´ê¸° ëª¨ë¸ ë¡ë
   const { scene: weaponModel } = useGLTF("https://agent8-games.verse8.io/assets/3D/weapons/ak47.glb");
   
-  // 무기 모델 설정
+  // ë¬´ê¸° ëª¨ë¸ ì¤ì 
   useEffect(() => {
     if (weaponModel) {
-      // 모델 설정
+      // ëª¨ë¸ ì¤ì 
       weaponModel.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -24,15 +24,15 @@ const FirstPersonView = () => {
         }
       });
       setModelLoaded(true);
-      console.log("무기 모델 로드 완료");
+      console.log("ë¬´ê¸° ëª¨ë¸ ë¡ë ìë£");
     }
   }, [weaponModel]);
   
-  // 반동 효과를 위한 상태
+  // ë°ë í¨ê³¼ë¥¼ ìí ìí
   const recoilRef = useRef({
     active: false,
     startTime: 0,
-    duration: 100, // 반동 지속 시간 (ms)
+    duration: 100, // ë°ë ì§ì ìê° (ms)
     basePositionRecoil: new Vector3(0, 0.05, 0.1),
     baseRotationRecoil: new Euler(-0.05, 0, 0),
     positionRecoil: new Vector3(0, 0, 0),
@@ -41,12 +41,12 @@ const FirstPersonView = () => {
     originalRotation: new Euler(0, Math.PI, 0),
   });
   
-  // 발사 이벤트 리스너
+  // ë°ì¬ ì´ë²¤í¸ ë¦¬ì¤ë
   useEffect(() => {
     const handleShoot = () => {
       if (gameOver || !gameStarted) return;
       
-      // 랜덤 반동 계산
+      // ëë¤ ë°ë ê³ì°
       const randomRange = 0.01;
       const randomPos = new Vector3(
         recoilRef.current.basePositionRecoil.x + (Math.random() * 2 - 1) * randomRange,
@@ -60,11 +60,11 @@ const FirstPersonView = () => {
         recoilRef.current.baseRotationRecoil.z + (Math.random() * 2 - 1) * randomRange
       );
       
-      // 계산된 랜덤 반동 적용
+      // ê³ì°ë ëë¤ ë°ë ì ì©
       recoilRef.current.positionRecoil.copy(randomPos);
       recoilRef.current.rotationRecoil.copy(randomRot);
       
-      // 반동 애니메이션 시작
+      // ë°ë ì ëë©ì´ì ìì
       recoilRef.current.active = true;
       recoilRef.current.startTime = performance.now();
     };
@@ -76,25 +76,25 @@ const FirstPersonView = () => {
     };
   }, [gameStarted, gameOver]);
   
-  // 반동 애니메이션 처리
+  // ë°ë ì ëë©ì´ì ì²ë¦¬
   useFrame(() => {
     if (!weaponRef.current || !modelLoaded || !gameStarted) return;
     
-    // 반동 애니메이션 처리
+    // ë°ë ì ëë©ì´ì ì²ë¦¬
     if (recoilRef.current.active) {
       const elapsed = performance.now() - recoilRef.current.startTime;
       const progress = Math.min(elapsed / recoilRef.current.duration, 1);
       
       if (progress < 1) {
-        // 반동 애니메이션 (빠르게 최대 반동으로 이동 후 천천히 원래 자리로)
-        const recoilPhase = 0.3; // 반동 단계 비율
+        // ë°ë ì ëë©ì´ì (ë¹ ë¥´ê² ìµë ë°ëì¼ë¡ ì´ë í ì²ì²í ìë ìë¦¬ë¡)
+        const recoilPhase = 0.3; // ë°ë ë¨ê³ ë¹ì¨
         
         if (progress < recoilPhase) {
-          // 빠르게 반동 적용
+          // ë¹ ë¥´ê² ë°ë ì ì©
           const recoilProgress = progress / recoilPhase;
           const easedProgress = 1 - Math.pow(1 - recoilProgress, 2);
           
-          // 무기 모델에 반동 적용
+          // ë¬´ê¸° ëª¨ë¸ì ë°ë ì ì©
           weaponRef.current.position.set(
             recoilRef.current.originalPosition.x + recoilRef.current.positionRecoil.x * easedProgress,
             recoilRef.current.originalPosition.y + recoilRef.current.positionRecoil.y * easedProgress,
@@ -107,7 +107,7 @@ const FirstPersonView = () => {
             recoilRef.current.originalRotation.z + recoilRef.current.rotationRecoil.z * easedProgress
           );
         } else {
-          // 천천히 원래 자리로 돌아옴
+          // ì²ì²í ìë ìë¦¬ë¡ ëìì´
           const recoveryProgress = (progress - recoilPhase) / (1 - recoilPhase);
           const easedRecovery = Math.pow(recoveryProgress, 0.5);
           
@@ -124,7 +124,7 @@ const FirstPersonView = () => {
           );
         }
       } else {
-        // 반동 애니메이션 완료, 원래 위치로 복귀
+        // ë°ë ì ëë©ì´ì ìë£, ìë ìì¹ë¡ ë³µê·
         weaponRef.current.position.copy(recoilRef.current.originalPosition);
         weaponRef.current.rotation.copy(recoilRef.current.originalRotation);
         recoilRef.current.active = false;
@@ -132,7 +132,7 @@ const FirstPersonView = () => {
     }
   });
   
-  // 모델 미리 로드
+  // ëª¨ë¸ ë¯¸ë¦¬ ë¡ë
   useGLTF.preload("https://agent8-games.verse8.io/assets/3D/weapons/ak47.glb");
   
   return (
@@ -149,7 +149,7 @@ const FirstPersonView = () => {
           {modelLoaded && (
             <primitive 
               object={weaponModel.clone()} 
-              scale={[0.03, 0.03, 0.03]} // 무기 크기 증가
+              scale={[0.03, 0.03, 0.03]} // ë¬´ê¸° í¬ê¸° ì¦ê°
             />
           )}
         </group>

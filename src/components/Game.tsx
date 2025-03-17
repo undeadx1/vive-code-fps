@@ -51,6 +51,7 @@ const Game = () => {
   
   return (
     <>
+      {/* 메인 게임 캔버스 */}
       <Canvas 
         shadows 
         camera={{ fov: 75, near: 0.1, far: 1000 }}
@@ -59,7 +60,8 @@ const Game = () => {
           top: 0,
           left: 0,
           width: '100%',
-          height: '100%'
+          height: '100%',
+          zIndex: 1 // 명시적으로 zIndex 설정
         }}
       >
         <Sky sunPosition={[100, 20, 100]} />
@@ -92,8 +94,18 @@ const Game = () => {
       {/* 무기 뷰 캔버스 (별도 레이어) */}
       <WeaponCanvas />
       
-      {/* UI 오버레이 */}
-      <UI />
+      {/* UI 오버레이 - 가장 높은 zIndex로 설정 */}
+      <div style={{ 
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        width: '100%', 
+        height: '100%', 
+        zIndex: 10, // UI를 가장 앞에 표시하기 위해 높은 zIndex 설정
+        pointerEvents: 'none' // UI를 통과하여 게임 조작 가능하도록 설정
+      }}>
+        <UI />
+      </div>
       
       {/* 게임 컨테이너 (포인터 락 대상) */}
       <div id="game-container" style={{ 

@@ -3,10 +3,10 @@ import { RigidBody } from "@react-three/rapier";
 import { useEffect } from "react";
 
 const FpsMap = () => {
-  // 맵 모델 로드
+  // ë§µ ëª¨ë¸ ë¡ë
   const { scene } = useGLTF("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
   
-  // 맵 모델 설정
+  // ë§µ ëª¨ë¸ ì¤ì 
   useEffect(() => {
     if (scene) {
       scene.traverse((child) => {
@@ -14,11 +14,11 @@ const FpsMap = () => {
           child.castShadow = true;
           child.receiveShadow = true;
           
-          // 충돌 감지를 위한 설정
+          // ì¶©ë ê°ì§ë¥¼ ìí ì¤ì 
           child.userData.isFloor = true;
         }
       });
-      console.log("맵 모델 로드 완료");
+      console.log("ë§µ ëª¨ë¸ ë¡ë ìë£");
     }
   }, [scene]);
   
@@ -34,7 +34,7 @@ const FpsMap = () => {
   );
 };
 
-// 맵 모델 미리 로드
+// ë§µ ëª¨ë¸ ë¯¸ë¦¬ ë¡ë
 useGLTF.preload("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
 
 export default FpsMap;

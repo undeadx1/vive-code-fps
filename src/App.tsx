@@ -8,7 +8,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    // 리소스 로딩 시뮬레이션
+    // ë¦¬ìì¤ ë¡ë© ìë®¬ë ì´ì
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);

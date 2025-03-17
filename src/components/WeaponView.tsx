@@ -20,61 +20,61 @@ const WeaponView = () => {
   const ammo = useGameStore((state) => state.ammo);
   const { shoot } = useKeyboardControls();
   
-  // 슈팅 시스템 초기화
+  // ìí ìì¤í ì´ê¸°í
   const shootingSystem = useRef(new ShootingSystem());
   
-  // 이펙트 상태
+  // ì´íí¸ ìí
   const [showMuzzleFlash, setShowMuzzleFlash] = useState(false);
   const [bulletTrails, setBulletTrails] = useState([]);
   const [impactEffects, setImpactEffects] = useState([]);
   
-  // 연사 관련 상태
+  // ì°ì¬ ê´ë ¨ ìí
   const [isFiring, setIsFiring] = useState(false);
-  const fireRateRef = useRef(150); // 연사 속도 (ms)
+  const fireRateRef = useRef(150); // ì°ì¬ ìë (ms)
   const lastFireTimeRef = useRef(0);
   const fireIntervalRef = useRef(null);
   
-  // 발사 이벤트 처리 중인지 추적하는 플래그
+  // ë°ì¬ ì´ë²¤í¸ ì²ë¦¬ ì¤ì¸ì§ ì¶ì íë íëê·¸
   const isHandlingShootEventRef = useRef(false);
   
-  // 3D 모델 로드
+  // 3D ëª¨ë¸ ë¡ë
   const { scene } = useGLTF("https://agent8-games.verse8.io/assets/3D/weapons/ak47.glb");
   
-  // 100도를 라디안으로 변환 (Three.js는 라디안 단위 사용)
+  // 100ëë¥¼ ë¼ëìì¼ë¡ ë³í (Three.jsë ë¼ëì ë¨ì ì¬ì©)
   const yRotation = 100 * (Math.PI / 180);
   
-  // 반동 효과를 위한 상태
+  // ë°ë í¨ê³¼ë¥¼ ìí ìí
   const recoilRef = useRef({
     active: false,
     startTime: 0,
-    duration: 100, // 반동 지속 시간 (ms)
+    duration: 100, // ë°ë ì§ì ìê° (ms)
     basePositionRecoil: new Vector3(0, 0.05, 0.1),
     baseRotationRecoil: new Euler(-0.05, 0, 0),
     positionRecoil: new Vector3(0, 0, 0),
     rotationRecoil: new Euler(0, 0, 0),
-    // 무기는 원래 위치로 되돌리고 이펙트는 현재 위치 유지
-    originalPosition: new Vector3(0.1, -0.2, -0.5), // 무기 위치 유지
-    originalRotation: new Euler(0, yRotation, 0), // Y축 100도 회전
+    // ë¬´ê¸°ë ìë ìì¹ë¡ ëëë¦¬ê³  ì´íí¸ë íì¬ ìì¹ ì ì§
+    originalPosition: new Vector3(0.1, -0.2, -0.5), // ë¬´ê¸° ìì¹ ì ì§
+    originalRotation: new Euler(0, yRotation, 0), // Yì¶ 100ë íì 
   });
   
-  // 무기 모델 생성
+  // ë¬´ê¸° ëª¨ë¸ ìì±
   useEffect(() => {
     if (!weaponRef.current || !scene) return;
     
-    console.log("무기 모델 생성 시도");
+    console.log("ë¬´ê¸° ëª¨ë¸ ìì± ìë");
     
-    // 기존 무기 모델 제거
+    // ê¸°ì¡´ ë¬´ê¸° ëª¨ë¸ ì ê±°
     while (weaponRef.current.children.length > 0) {
       weaponRef.current.remove(weaponRef.current.children[0]);
     }
     
-    // 모델 클론 생성
+    // ëª¨ë¸ í´ë¡  ìì±
     const weaponModel = SkeletonUtils.clone(scene);
     
-    // 모델 스케일 및 위치 조정 - 스케일 증가
-    weaponModel.scale.set(0.08, 0.08, 0.08); // 모델 크기 증가 (0.05 -> 0.08)
+    // ëª¨ë¸ ì¤ì¼ì¼ ë° ìì¹ ì¡°ì  - ì¤ì¼ì¼ ì¦ê°
+    weaponModel.scale.set(0.08, 0.08, 0.08); // ëª¨ë¸ í¬ê¸° ì¦ê° (0.05 -> 0.08)
     
-    // 그림자 설정
+    // ê·¸ë¦¼ì ì¤ì 
     weaponModel.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = true;
@@ -82,75 +82,75 @@ const WeaponView = () => {
       }
     });
     
-    // 총구 위치 설정 (모델에 맞게 조정)
+    // ì´êµ¬ ìì¹ ì¤ì  (ëª¨ë¸ì ë§ê² ì¡°ì )
     const muzzlePoint = new Group();
     muzzlePoint.name = "muzzlePoint";
     
-    // AK-47 모델의 총구 위치를 정확하게 설정
-    // 총구 위치를 모델의 앞쪽 끝으로 조정 (총구 방향으로 더 앞쪽)
-    // 총구 위치는 모델 기준으로 설정되므로 y값을 0.35로 증가시켜 이펙트가 더 위쪽에 표시되도록 함
-    muzzlePoint.position.set(0, 0.35, -0.8); // y값을 0.25에서 0.35로 변경하여 더 위쪽으로 이동
+    // AK-47 ëª¨ë¸ì ì´êµ¬ ìì¹ë¥¼ ì ííê² ì¤ì 
+    // ì´êµ¬ ìì¹ë¥¼ ëª¨ë¸ì ììª½ ëì¼ë¡ ì¡°ì  (ì´êµ¬ ë°©í¥ì¼ë¡ ë ììª½)
+    // ì´êµ¬ ìì¹ë ëª¨ë¸ ê¸°ì¤ì¼ë¡ ì¤ì ëë¯ë¡ yê°ì 0.35ë¡ ì¦ê°ìì¼ ì´íí¸ê° ë ììª½ì íìëëë¡ í¨
+    muzzlePoint.position.set(0, 0.35, -0.8); // yê°ì 0.25ìì 0.35ë¡ ë³ê²½íì¬ ë ììª½ì¼ë¡ ì´ë
     
     weaponModel.add(muzzlePoint);
     muzzlePointRef.current = muzzlePoint;
     
-    // 무기 모델 추가
+    // ë¬´ê¸° ëª¨ë¸ ì¶ê°
     weaponRef.current.add(weaponModel);
     
-    // 무기 위치 설정
+    // ë¬´ê¸° ìì¹ ì¤ì 
     weaponRef.current.position.copy(recoilRef.current.originalPosition);
     
-    // 무기 회전 설정 - Y축 100도 회전
+    // ë¬´ê¸° íì  ì¤ì  - Yì¶ 100ë íì 
     weaponRef.current.rotation.set(0, yRotation, 0);
     
-    // 원래 회전값 업데이트 (반동 계산에 사용)
+    // ìë íì ê° ìë°ì´í¸ (ë°ë ê³ì°ì ì¬ì©)
     recoilRef.current.originalRotation = new Euler(0, yRotation, 0);
     
-    console.log("무기 모델 생성 완료");
+    console.log("ë¬´ê¸° ëª¨ë¸ ìì± ìë£");
   }, [scene, yRotation]);
   
-  // 발사 처리 - 중요: 이 함수는 발사 이벤트를 처리하는 유일한 함수
+  // ë°ì¬ ì²ë¦¬ - ì¤ì: ì´ í¨ìë ë°ì¬ ì´ë²¤í¸ë¥¼ ì²ë¦¬íë ì ì¼í í¨ì
   useEffect(() => {
     const handleShoot = () => {
-      // 이미 이벤트 처리 중이면 무시 (중복 방지)
+      // ì´ë¯¸ ì´ë²¤í¸ ì²ë¦¬ ì¤ì´ë©´ ë¬´ì (ì¤ë³µ ë°©ì§)
       if (isHandlingShootEventRef.current) {
         return;
       }
       
-      // 게임 상태 확인
+      // ê²ì ìí íì¸
       if (gameOver || !gameStarted || ammo <= 0) {
         return;
       }
       
-      // 이벤트 처리 중 플래그 설정
+      // ì´ë²¤í¸ ì²ë¦¬ ì¤ íëê·¸ ì¤ì 
       isHandlingShootEventRef.current = true;
       
       try {
-        // 탄약 감소 (1발씩만 감소)
+        // íì½ ê°ì (1ë°ì©ë§ ê°ì)
         decreaseAmmo(1);
         
-        // 머즐 플래시 표시
+        // ë¨¸ì¦ íëì íì
         setShowMuzzleFlash(true);
         setTimeout(() => setShowMuzzleFlash(false), 100);
         
-        // 총구 월드 위치 계산
+        // ì´êµ¬ ìë ìì¹ ê³ì°
         const muzzleWorldPosition = new Vector3();
         if (muzzlePointRef.current && muzzlePointRef.current.getWorldPosition) {
           muzzlePointRef.current.getWorldPosition(muzzleWorldPosition);
         } else {
-          // 대체 위치 계산 - 총구 위치를 더 앞쪽으로 조정
-          // 무기는 원래 위치로 되돌리고 이펙트는 현재 위치 유지하기 위해 y값 조정
+          // ëì²´ ìì¹ ê³ì° - ì´êµ¬ ìì¹ë¥¼ ë ììª½ì¼ë¡ ì¡°ì 
+          // ë¬´ê¸°ë ìë ìì¹ë¡ ëëë¦¬ê³  ì´íí¸ë íì¬ ìì¹ ì ì§íê¸° ìí´ yê° ì¡°ì 
           muzzleWorldPosition.copy(weaponRef.current.position)
             .add(new Vector3(0, 0.35, -0.8).applyQuaternion(weaponRef.current.quaternion));
         }
         
-        // 레이캐스트 방향 (카메라 방향)
+        // ë ì´ìºì¤í¸ ë°©í¥ (ì¹´ë©ë¼ ë°©í¥)
         const direction = new Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
         
-        // 레이캐스트 결과에 따라 총알 궤적 생성
+        // ë ì´ìºì¤í¸ ê²°ê³¼ì ë°ë¼ ì´ì ê¶¤ì  ìì±
         const hit = shootingSystem.current.performRaycast(camera.position, direction);
         if (hit) {
-          // 새 총알 궤적 추가 - 시작점을 총구 위치로 설정
+          // ì ì´ì ê¶¤ì  ì¶ê° - ììì ì ì´êµ¬ ìì¹ë¡ ì¤ì 
           const newTrail = {
             id: Date.now(),
             start: muzzleWorldPosition.clone(),
@@ -159,27 +159,27 @@ const WeaponView = () => {
           
           setBulletTrails(trails => [...trails, newTrail]);
           
-          // 200ms 후 총알 궤적 제거
+          // 200ms í ì´ì ê¶¤ì  ì ê±°
           setTimeout(() => {
             setBulletTrails(trails => trails.filter(trail => trail.id !== newTrail.id));
           }, 200);
           
-          // 충돌 이펙트 추가 (총알 구멍)
+          // ì¶©ë ì´íí¸ ì¶ê° (ì´ì êµ¬ë©)
           const newImpact = {
-            id: Date.now() + 1, // 다른 ID 사용
+            id: Date.now() + 1, // ë¤ë¥¸ ID ì¬ì©
             position: hit.point.clone(),
-            normal: direction.clone().negate(), // 간단하게 카메라 방향의 반대로 설정
+            normal: direction.clone().negate(), // ê°ë¨íê² ì¹´ë©ë¼ ë°©í¥ì ë°ëë¡ ì¤ì 
           };
           
           setImpactEffects(effects => [...effects, newImpact]);
           
-          // 5초 후 충돌 이펙트 제거
+          // 5ì´ í ì¶©ë ì´íí¸ ì ê±°
           setTimeout(() => {
             setImpactEffects(effects => effects.filter(effect => effect.id !== newImpact.id));
           }, 5000);
         }
         
-        // 랜덤 반동 계산
+        // ëë¤ ë°ë ê³ì°
         const randomRange = 0.01;
         const randomPos = new Vector3(
           recoilRef.current.basePositionRecoil.x + (Math.random() * 2 - 1) * randomRange,
@@ -193,22 +193,22 @@ const WeaponView = () => {
           recoilRef.current.baseRotationRecoil.z + (Math.random() * 2 - 1) * randomRange
         );
         
-        // 계산된 랜덤 반동 적용
+        // ê³ì°ë ëë¤ ë°ë ì ì©
         recoilRef.current.positionRecoil.copy(randomPos);
         recoilRef.current.rotationRecoil.copy(randomRot);
         
-        // 반동 애니메이션 시작
+        // ë°ë ì ëë©ì´ì ìì
         recoilRef.current.active = true;
         recoilRef.current.startTime = performance.now();
       } finally {
-        // 이벤트 처리 완료 후 플래그 해제 (다음 발사 허용)
+        // ì´ë²¤í¸ ì²ë¦¬ ìë£ í íëê·¸ í´ì  (ë¤ì ë°ì¬ íì©)
         setTimeout(() => {
           isHandlingShootEventRef.current = false;
         }, 100);
       }
     };
     
-    // 발사 이벤트 리스너 등록
+    // ë°ì¬ ì´ë²¤í¸ ë¦¬ì¤ë ë±ë¡
     window.addEventListener("shoot", handleShoot);
     
     return () => {
@@ -216,46 +216,46 @@ const WeaponView = () => {
     };
   }, [gameStarted, gameOver, ammo, decreaseAmmo, camera]);
   
-  // 연사 기능 구현 (단순화)
+  // ì°ì¬ ê¸°ë¥ êµ¬í (ë¨ìí)
   useEffect(() => {
-    // 이전 타이머 정리
+    // ì´ì  íì´ë¨¸ ì ë¦¬
     if (fireIntervalRef.current) {
       clearTimeout(fireIntervalRef.current);
       fireIntervalRef.current = null;
     }
     
-    // 발사 상태가 아니면 타이머 설정 안함
+    // ë°ì¬ ìíê° ìëë©´ íì´ë¨¸ ì¤ì  ìí¨
     if (!isFiring || !gameStarted || gameOver || ammo <= 0) return;
     
-    // 연사 처리 함수
+    // ì°ì¬ ì²ë¦¬ í¨ì
     const handleAutoFire = () => {
       const now = performance.now();
       
-      // 쿨다운 확인
+      // ì¿¨ë¤ì´ íì¸
       if (now - lastFireTimeRef.current < fireRateRef.current) {
-        // 아직 쿨다운 중이면 다음 체크 예약
+        // ìì§ ì¿¨ë¤ì´ ì¤ì´ë©´ ë¤ì ì²´í¬ ìì½
         fireIntervalRef.current = setTimeout(handleAutoFire, 10);
         return;
       }
       
-      // 발사 시간 업데이트
+      // ë°ì¬ ìê° ìë°ì´í¸
       lastFireTimeRef.current = now;
       
-      // 발사 처리 (이미 이벤트 처리 중이 아닐 때만)
+      // ë°ì¬ ì²ë¦¬ (ì´ë¯¸ ì´ë²¤í¸ ì²ë¦¬ ì¤ì´ ìë ëë§)
       if (!isHandlingShootEventRef.current && ammo > 0) {
         shootingSystem.current.shoot(camera);
       }
       
-      // 계속 발사 중이면 다음 발사 예약
+      // ê³ì ë°ì¬ ì¤ì´ë©´ ë¤ì ë°ì¬ ìì½
       if (isFiring && gameStarted && !gameOver && ammo > 0) {
         fireIntervalRef.current = setTimeout(handleAutoFire, fireRateRef.current);
       }
     };
     
-    // 첫 발사 예약
+    // ì²« ë°ì¬ ìì½
     fireIntervalRef.current = setTimeout(handleAutoFire, 0);
     
-    // 컴포넌트 언마운트 시 타이머 정리
+    // ì»´í¬ëí¸ ì¸ë§ì´í¸ ì íì´ë¨¸ ì ë¦¬
     return () => {
       if (fireIntervalRef.current) {
         clearTimeout(fireIntervalRef.current);
@@ -264,14 +264,14 @@ const WeaponView = () => {
     };
   }, [isFiring, gameStarted, gameOver, ammo, camera]);
   
-  // 발사 입력 처리
+  // ë°ì¬ ìë ¥ ì²ë¦¬
   useFrame(() => {
     if (!gameStarted || gameOver) {
       setIsFiring(false);
       return;
     }
     
-    // 발사 키 입력 처리
+    // ë°ì¬ í¤ ìë ¥ ì²ë¦¬
     if (shoot && !isFiring) {
       setIsFiring(true);
     } else if (!shoot && isFiring) {
@@ -279,25 +279,25 @@ const WeaponView = () => {
     }
   });
   
-  // 반동 애니메이션 처리
+  // ë°ë ì ëë©ì´ì ì²ë¦¬
   useFrame(() => {
     if (!weaponRef.current || !gameStarted) return;
     
-    // 반동 애니메이션 처리
+    // ë°ë ì ëë©ì´ì ì²ë¦¬
     if (recoilRef.current.active) {
       const elapsed = performance.now() - recoilRef.current.startTime;
       const progress = Math.min(elapsed / recoilRef.current.duration, 1);
       
       if (progress < 1) {
-        // 반동 애니메이션 (빠르게 최대 반동으로 이동 후 천천히 원래 자리로)
-        const recoilPhase = 0.3; // 반동 단계 비율
+        // ë°ë ì ëë©ì´ì (ë¹ ë¥´ê² ìµë ë°ëì¼ë¡ ì´ë í ì²ì²í ìë ìë¦¬ë¡)
+        const recoilPhase = 0.3; // ë°ë ë¨ê³ ë¹ì¨
         
         if (progress < recoilPhase) {
-          // 빠르게 반동 적용
+          // ë¹ ë¥´ê² ë°ë ì ì©
           const recoilProgress = progress / recoilPhase;
           const easedProgress = 1 - Math.pow(1 - recoilProgress, 2);
           
-          // 무기 모델에 반동 적용
+          // ë¬´ê¸° ëª¨ë¸ì ë°ë ì ì©
           weaponRef.current.position.set(
             recoilRef.current.originalPosition.x + recoilRef.current.positionRecoil.x * easedProgress,
             recoilRef.current.originalPosition.y + recoilRef.current.positionRecoil.y * easedProgress,
@@ -310,7 +310,7 @@ const WeaponView = () => {
             recoilRef.current.originalRotation.z + recoilRef.current.rotationRecoil.z * easedProgress
           );
         } else {
-          // 천천히 원래 자리로 돌아옴
+          // ì²ì²í ìë ìë¦¬ë¡ ëìì´
           const recoveryProgress = (progress - recoilPhase) / (1 - recoilPhase);
           const easedRecovery = Math.pow(recoveryProgress, 0.5);
           
@@ -327,7 +327,7 @@ const WeaponView = () => {
           );
         }
       } else {
-        // 반동 애니메이션 완료, 원래 위치로 복귀
+        // ë°ë ì ëë©ì´ì ìë£, ìë ìì¹ë¡ ë³µê·
         weaponRef.current.position.copy(recoilRef.current.originalPosition);
         weaponRef.current.rotation.copy(recoilRef.current.originalRotation);
         recoilRef.current.active = false;
@@ -335,7 +335,7 @@ const WeaponView = () => {
     }
   });
   
-  // 컴포넌트 언마운트 시 타이머 정리
+  // ì»´í¬ëí¸ ì¸ë§ì´í¸ ì íì´ë¨¸ ì ë¦¬
   useEffect(() => {
     return () => {
       if (fireIntervalRef.current) {
@@ -347,25 +347,25 @@ const WeaponView = () => {
   
   return (
     <group position={[0, 0, 0]}>
-      {/* 무기 모델 */}
+      {/* ë¬´ê¸° ëª¨ë¸ */}
       <group 
         ref={weaponRef} 
-        position={[0.1, -0.2, -0.5]} // 무기 위치 유지
-        rotation={[0, yRotation, 0]} // Y축 100도 회전
+        position={[0.1, -0.2, -0.5]} // ë¬´ê¸° ìì¹ ì ì§
+        rotation={[0, yRotation, 0]} // Yì¶ 100ë íì 
         visible={true}
       />
       
-      {/* 머즐 플래시 이펙트 - 총구 위치에 정확히 배치 */}
+      {/* ë¨¸ì¦ íëì ì´íí¸ - ì´êµ¬ ìì¹ì ì íí ë°°ì¹ */}
       {showMuzzleFlash && (
         <MuzzleFlash 
           position={muzzlePointRef.current && muzzlePointRef.current.getWorldPosition 
             ? muzzlePointRef.current.getWorldPosition(new Vector3()) 
-            : new Vector3(0.1, 0.15, -1.3)} // 이펙트 위치를 더 위로 조정 (0.05 -> 0.15)
+            : new Vector3(0.1, 0.15, -1.3)} // ì´íí¸ ìì¹ë¥¼ ë ìë¡ ì¡°ì  (0.05 -> 0.15)
           onComplete={() => setShowMuzzleFlash(false)}
         />
       )}
       
-      {/* 총알 궤적 이펙트 - 여러 개 표시 가능 */}
+      {/* ì´ì ê¶¤ì  ì´íí¸ - ì¬ë¬ ê° íì ê°ë¥ */}
       {bulletTrails.map(trail => (
         <BulletTrail 
           key={trail.id}
@@ -377,7 +377,7 @@ const WeaponView = () => {
         />
       ))}
       
-      {/* 충돌 이펙트 (총알 구멍) */}
+      {/* ì¶©ë ì´íí¸ (ì´ì êµ¬ë©) */}
       {impactEffects.map(effect => (
         <ImpactEffect
           key={effect.id}
@@ -392,7 +392,7 @@ const WeaponView = () => {
   );
 };
 
-// 모델 프리로드
+// ëª¨ë¸ íë¦¬ë¡ë
 useGLTF.preload("https://agent8-games.verse8.io/assets/3D/weapons/ak47.glb");
 
 export default WeaponView;

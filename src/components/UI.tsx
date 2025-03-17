@@ -21,7 +21,8 @@ const UI = () => {
         color: 'white',
         fontSize: '24px',
         fontFamily: '"Rajdhani", sans-serif',
-        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)'
+        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
+        pointerEvents: 'auto' // 시작 화면은 클릭 가능하도록 설정
       }}>
         <h1 style={{ 
           fontSize: '48px', 
@@ -70,7 +71,8 @@ const UI = () => {
         color: 'white',
         fontSize: '24px',
         fontFamily: '"Rajdhani", sans-serif',
-        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)'
+        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
+        pointerEvents: 'auto' // 게임 오버 화면은 클릭 가능하도록 설정
       }}>
         <h1 style={{ 
           fontSize: '48px', 
@@ -229,7 +231,7 @@ const UI = () => {
         height: '20px',
         pointerEvents: 'none'
       }}>
-        {/* 중앙 점 */}
+        {/* 중심점 */}
         <div style={{
           position: 'absolute',
           top: '50%',

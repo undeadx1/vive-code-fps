@@ -44,7 +44,7 @@ class ShootingSystem {
     
     // Check if we're still in cooldown
     if (now - this.lastShootTime < this.shootCooldown) {
-      console.log("ShootingSystem: 쿨다운 중입니다. 발사 불가.");
+      console.log("ShootingSystem: ì¿¨ë¤ì´ ì¤ìëë¤. ë°ì¬ ë¶ê°.");
       return false; // Still in cooldown, don't shoot
     }
     
@@ -54,7 +54,7 @@ class ShootingSystem {
     // Get camera direction
     const direction = new Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
     
-    // Trigger shoot event - 중요: 이벤트는 한 번만 발생시킴
+    // Trigger shoot event - ì¤ì: ì´ë²¤í¸ë í ë²ë§ ë°ììí´
     const shootEvent = new CustomEvent('shoot');
     window.dispatchEvent(shootEvent);
     
