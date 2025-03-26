@@ -13,7 +13,7 @@ import { CharacterAction } from "../constants/character.constant.ts";
 import { Mesh, Vector3 } from "three";
 import { EffectsManager } from "./EffectsManager";
 
-// SceneContent 컴포넌트 - Canvas 내부에서 사용될 콘텐츠
+// SceneContent 컴포넌트 - Canvas 내부에서 사용될 콘텐츠 
 const SceneContent = ({ 
   characterResource, 
   currentActionRef, 
@@ -30,27 +30,27 @@ const SceneContent = ({
     const characterPosition = new Vector3();
     characterGroupRef.current.getWorldPosition(characterPosition);
     
-    // 정확히 40개의 파이어볼을 단일 원 위에 배치
+    // 정확히 40개의 파이어볼을 단일 원에 배치
     const totalFireballs = 40;
     const radius = 2.5; // 원의 반지름
     const height = 0.5; // 모든 파이어볼의 동일한 높이
     
     for (let i = 0; i < totalFireballs; i++) {
-      // 원 둘레를 따라 균등하게 분포
+      // 각도를 따라 균등하게 분포
       const angle = (Math.PI * 2 / totalFireballs) * i;
       
-      // 원의 좌표 계산
+      // 원형 좌표 계산
       const x = characterPosition.x + Math.cos(angle) * radius;
       const z = characterPosition.z + Math.sin(angle) * radius;
       
       // 파이어볼 위치
       const fireballPosition = new Vector3(x, characterPosition.y + height, z);
       
-      // 순차적으로 생성 (5ms 간격으로 생성하여 약간의 시각적 효과 추가)
+      // 순차적으로 생성 (50ms 간격으로 생성하여 명확한 시간적 패턴 추가)
       setTimeout(() => {
         // 모든 파이어볼은 동일한 크기(원래 크기의 100%)
         effectsManagerRef.current.addFireballEffect(fireballPosition, 1800, 1.0);
-      }, i * 5);
+      }, i * 50); // 5ms에서 50ms로 변경 - 원형 형성 속도를 늦춤
     }
   }, []);
 

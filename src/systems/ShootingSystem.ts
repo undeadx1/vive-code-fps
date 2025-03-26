@@ -44,7 +44,7 @@ class ShootingSystem {
     
     // Check if we're still in cooldown
     if (now - this.lastShootTime < this.shootCooldown) {
-      console.log("ShootingSystem: Ã¬Â¿Â¨Ã«ÂÂ¤Ã¬ÂÂ´ Ã¬Â¤ÂÃ¬ÂÂÃ«ÂÂÃ«ÂÂ¤. Ã«Â°ÂÃ¬ÂÂ¬ Ã«Â¶ÂÃªÂ°Â.");
+      console.log("ShootingSystem: ÃÂ¬ÃÂ¿ÃÂ¨ÃÂ«ÃÂÃÂ¤ÃÂ¬ÃÂÃÂ´ ÃÂ¬ÃÂ¤ÃÂÃÂ¬ÃÂÃÂÃÂ«ÃÂÃÂÃÂ«ÃÂÃÂ¤. ÃÂ«ÃÂ°ÃÂÃÂ¬ÃÂÃÂ¬ ÃÂ«ÃÂ¶ÃÂÃÂªÃÂ°ÃÂ.");
       return false; // Still in cooldown, don't shoot
     }
     
@@ -54,7 +54,7 @@ class ShootingSystem {
     // Get camera direction
     const direction = new Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
     
-    // Trigger shoot event - Ã¬Â¤ÂÃ¬ÂÂ: Ã¬ÂÂ´Ã«Â²Â¤Ã­ÂÂ¸Ã«ÂÂ Ã­ÂÂ Ã«Â²ÂÃ«Â§Â Ã«Â°ÂÃ¬ÂÂÃ¬ÂÂÃ­ÂÂ´
+    // Trigger shoot event - ÃÂ¬ÃÂ¤ÃÂÃÂ¬ÃÂÃÂ: ÃÂ¬ÃÂÃÂ´ÃÂ«ÃÂ²ÃÂ¤ÃÂ­ÃÂÃÂ¸ÃÂ«ÃÂÃÂ ÃÂ­ÃÂÃÂ ÃÂ«ÃÂ²ÃÂÃÂ«ÃÂ§ÃÂ ÃÂ«ÃÂ°ÃÂÃÂ¬ÃÂÃÂÃÂ¬ÃÂÃÂÃÂ­ÃÂÃÂ´
     const shootEvent = new CustomEvent('shoot');
     window.dispatchEvent(shootEvent);
     

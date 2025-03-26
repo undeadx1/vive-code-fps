@@ -3,10 +3,10 @@ import { RigidBody } from "@react-three/rapier";
 import { useEffect } from "react";
 
 const FpsMap = () => {
-  // Ã«Â§Âµ Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¡ÂÃ«ÂÂ
+  // ÃÂ«ÃÂ§ÃÂµ ÃÂ«ÃÂªÃÂ¨ÃÂ«ÃÂÃÂ¸ ÃÂ«ÃÂ¡ÃÂÃÂ«ÃÂÃÂ
   const { scene } = useGLTF("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
   
-  // Ã«Â§Âµ Ã«ÂªÂ¨Ã«ÂÂ¸ Ã¬ÂÂ¤Ã¬Â Â
+  // ÃÂ«ÃÂ§ÃÂµ ÃÂ«ÃÂªÃÂ¨ÃÂ«ÃÂÃÂ¸ ÃÂ¬ÃÂÃÂ¤ÃÂ¬ÃÂ ÃÂ
   useEffect(() => {
     if (scene) {
       scene.traverse((child) => {
@@ -14,11 +14,11 @@ const FpsMap = () => {
           child.castShadow = true;
           child.receiveShadow = true;
           
-          // Ã¬Â¶Â©Ã«ÂÂ ÃªÂ°ÂÃ¬Â§ÂÃ«Â¥Â¼ Ã¬ÂÂÃ­ÂÂ Ã¬ÂÂ¤Ã¬Â Â
+          // ÃÂ¬ÃÂ¶ÃÂ©ÃÂ«ÃÂÃÂ ÃÂªÃÂ°ÃÂÃÂ¬ÃÂ§ÃÂÃÂ«ÃÂ¥ÃÂ¼ ÃÂ¬ÃÂÃÂÃÂ­ÃÂÃÂ ÃÂ¬ÃÂÃÂ¤ÃÂ¬ÃÂ ÃÂ
           child.userData.isFloor = true;
         }
       });
-      console.log("Ã«Â§Âµ Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¡ÂÃ«ÂÂ Ã¬ÂÂÃ«Â£Â");
+      console.log("ÃÂ«ÃÂ§ÃÂµ ÃÂ«ÃÂªÃÂ¨ÃÂ«ÃÂÃÂ¸ ÃÂ«ÃÂ¡ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂ«ÃÂ£ÃÂ");
     }
   }, [scene]);
   
@@ -34,7 +34,7 @@ const FpsMap = () => {
   );
 };
 
-// Ã«Â§Âµ Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¯Â¸Ã«Â¦Â¬ Ã«Â¡ÂÃ«ÂÂ
+// ÃÂ«ÃÂ§ÃÂµ ÃÂ«ÃÂªÃÂ¨ÃÂ«ÃÂÃÂ¸ ÃÂ«ÃÂ¯ÃÂ¸ÃÂ«ÃÂ¦ÃÂ¬ ÃÂ«ÃÂ¡ÃÂÃÂ«ÃÂÃÂ
 useGLTF.preload("https://agent8-games.verse8.io/assets/3D/map/fpsArena.glb");
 
 export default FpsMap;

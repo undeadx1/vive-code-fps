@@ -17,7 +17,7 @@ export const FireballEffect: React.FC<FireballEffectProps> = ({
   disableBillboard = false,
   duration = 2000
 }) => {
-  // 화염 효과를 위한 프래그먼트 쉐이더
+  // íì¼ í¨ê³¼ë¥¼ ìí íëê·¸ë¨¼í¸ ìì´ë
   const fireFragmentShader = /* glsl */ `
     uniform vec2 resolution;
     uniform float time;
@@ -47,19 +47,19 @@ export const FireballEffect: React.FC<FireballEffectProps> = ({
     }
     
     void main() {
-      // 중앙을 향해 좌표 조정 (0.5, 0.5가 중앙)
+      // ì¤ìì í¥í´ ì¢í ì¡°ì  (0.5, 0.5ê° ì¤ì)
       vec2 p = vUv - 0.5;
       
-      // 원형 마스크를 위한 거리 계산
+      // ìí ë§ì¤í¬ë¥¼ ìí ê±°ë¦¬ ê³ì°
       float dist = length(p);
       
-      // 효과 크기 조정 (숫자가 클수록 효과 크기 감소)
+      // í¨ê³¼ í¬ê¸° ì¡°ì  (ì«ìê° í´ìë¡ í¨ê³¼ í¬ê¸° ê°ì)
       float color = 3.0 - (3.*length(2.5*p));
       
       vec3 coord = vec3(atan(p.x,p.y)/6.2832+.5, length(p)*.4, .5);
       
-      // 시간 기반 움직임 추가
-      float t = time * 2.0; // 시간 속도 조절
+      // ìê° ê¸°ë° ìì§ì ì¶ê°
+      float t = time * 2.0; // ìê° ìë ì¡°ì 
       
       coord += vec3(0., t * -0.05, t * 0.01);
       
@@ -68,48 +68,48 @@ export const FireballEffect: React.FC<FireballEffectProps> = ({
         color += (1.5 / power) * customNoise(coord, power*16.);
       }
       
-      // 화염 효과를 위한 색상 조정
+      // íì¼ í¨ê³¼ë¥¼ ìí ìì ì¡°ì 
       vec3 fireColor = vec3(
         color * 1.8,                   // R
         pow(max(color,0.),2.)*0.4,     // G
         pow(max(color,0.),3.)*0.15     // B
       );
       
-      // 경계에 대한 하드 컷오프
+      // ê²½ê³ì ëí íë ì»·ì¤í
       float alpha = 1.0;
       
-      // 색상 값이 임계값 미만인 경우 완전히 투명 처리 (하드 엣지)
+      // ìì ê°ì´ ìê³ê° ë¯¸ë§ì¸ ê²½ì° ìì í í¬ëª ì²ë¦¬ (íë ì£ì§)
       if (color < 0.05) {
-        discard; // 픽셀 완전 제거
+        discard; // í½ì ìì  ì ê±°
       }
       
-      // 가장자리 페이딩 처리
+      // ê°ì¥ìë¦¬ íì´ë© ì²ë¦¬
       if (color < 0.3) {
         alpha = smoothstep(0.05, 0.3, color);
       }
       
-      // 원형 페이드아웃 - 가장자리에서 부드러운 사라짐
+      // ìí íì´ëìì - ê°ì¥ìë¦¬ìì ë¶ëë¬ì´ ì¬ë¼ì§
       if (dist > 0.4) {
         alpha *= smoothstep(0.5, 0.4, dist);
       }
       
-      // 시간 기반 불투명도 애니메이션
-      // 0s ~ 0.5s: 0 -> 1 (페이드 인)
-      // 0.5s ~ 1.5s: 1 (완전 불투명)
-      // 1.5s ~ 2.0s: 1 -> 0 (페이드 아웃)
+      // ìê° ê¸°ë° ë¶í¬ëªë ì ëë©ì´ì
+      // 0s ~ 0.5s: 0 -> 1 (íì´ë ì¸)
+      // 0.5s ~ 1.5s: 1 (ìì  ë¶í¬ëª)
+      // 1.5s ~ 2.0s: 1 -> 0 (íì´ë ìì)
       float timeBasedOpacity = 0.0;
       if (time < 0.5) {
-        // 페이드 인 (0s ~ 0.5s)
+        // íì´ë ì¸ (0s ~ 0.5s)
         timeBasedOpacity = smoothstep(0.0, 0.5, time);
       } else if (time < 1.5) {
-        // 완전 불투명 구간 (0.5s ~ 1.5s)
+        // ìì  ë¶í¬ëª êµ¬ê° (0.5s ~ 1.5s)
         timeBasedOpacity = 1.0;
       } else if (time < 2.0) {
-        // 페이드 아웃 (1.5s ~ 2.0s)
+        // íì´ë ìì (1.5s ~ 2.0s)
         timeBasedOpacity = 1.0 - smoothstep(1.5, 2.0, time);
       }
       
-      // 최종 불투명도에 시간 기반 불투명도 적용
+      // ìµì¢ ë¶í¬ëªëì ìê° ê¸°ë° ë¶í¬ëªë ì ì©
       alpha *= timeBasedOpacity * opacity;
       
       gl_FragColor = vec4(fireColor, alpha);
@@ -141,17 +141,7 @@ export const FireballEffect: React.FC<FireballEffectProps> = ({
           value: new Vector2(window.innerWidth, window.innerHeight),
         },
         time: { value: 0 },
-      }}
-      scaleAnimation={{
-        start: 0.8,
-        mid: 1.2,
-        end: 0.9
-      }}
-      opacityAnimation={{
-        start: 0.6,
-        mid: 1.0,
-        end: 0.0
-      }}
+      }}     
       fadeOut={true}
     />
   );

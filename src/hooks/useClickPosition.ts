@@ -9,30 +9,30 @@ export const useClickPosition = (characterRef?: React.RefObject<Mesh>) => {
   const groundPlane = useRef(new Plane(new Vector3(0, 1, 0), 0));
   const [clickPosition, setClickPosition] = useState<Vector3 | null>(null);
 
-  // 클릭 위치 계산 함수
+  // í´ë¦­ ìì¹ ê³ì° í¨ì
   const calculateClickPosition = useCallback((event: MouseEvent) => {
-    // 마우스 좌표를 정규화된 장치 좌표로 변환 (-1 ~ 1)
+    // ë§ì°ì¤ ì¢íë¥¼ ì ê·íë ì¥ì¹ ì¢íë¡ ë³í (-1 ~ 1)
     mouse.current.x = (event.clientX / size.width) * 2 - 1;
     mouse.current.y = -(event.clientY / size.height) * 2 + 1;
 
-    // 레이캐스터 업데이트
+    // ë ì´ìºì¤í° ìë°ì´í¸
     raycaster.current.setFromCamera(mouse.current, camera);
 
-    // 캐릭터와의 교차 확인 (캐릭터가 있는 경우)
+    // ìºë¦­í°ìì êµì°¨ íì¸ (ìºë¦­í°ê° ìë ê²½ì°)
     if (characterRef?.current) {
       const intersects = raycaster.current.intersectObject(characterRef.current, true);
       if (intersects.length > 0) {
-        // 캐릭터와 교차한 위치 반환
+        // ìºë¦­í°ì êµì°¨í ìì¹ ë°í
         setClickPosition(intersects[0].point.clone());
         return;
       }
     }
 
-    // 지면 평면과의 교차 계산
+    // ì§ë©´ íë©´ê³¼ì êµì°¨ ê³ì°
     const planeIntersect = new Vector3();
     raycaster.current.ray.intersectPlane(groundPlane.current, planeIntersect);
     
-    // 교차 위치가 너무 멀리 있으면 카메라 방향으로 적당한 거리에 위치시킴
+    // êµì°¨ ìì¹ê° ëë¬´ ë©ë¦¬ ìì¼ë©´ ì¹´ë©ë¼ ë°©í¥ì¼ë¡ ì ë¹í ê±°ë¦¬ì ìì¹ìí´
     if (planeIntersect.distanceTo(camera.position) > 20) {
       const direction = raycaster.current.ray.direction.clone().normalize();
       planeIntersect.copy(camera.position.clone().add(direction.multiplyScalar(10)));

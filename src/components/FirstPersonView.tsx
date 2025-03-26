@@ -10,13 +10,13 @@ const FirstPersonView = () => {
   const gameStarted = useGameStore((state) => state.gameStarted);
   const gameOver = useGameStore((state) => state.gameOver);
   
-  // Ã«Â¬Â´ÃªÂ¸Â° Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¡ÂÃ«ÂÂ
+  // ÃÂ«ÃÂ¬ÃÂ´ÃÂªÃÂ¸ÃÂ° ÃÂ«ÃÂªÃÂ¨ÃÂ«ÃÂÃÂ¸ ÃÂ«ÃÂ¡ÃÂÃÂ«ÃÂÃÂ
   const { scene: weaponModel } = useGLTF("https://agent8-games.verse8.io/assets/3D/weapons/ak47.glb");
   
-  // Ã«Â¬Â´ÃªÂ¸Â° Ã«ÂªÂ¨Ã«ÂÂ¸ Ã¬ÂÂ¤Ã¬Â Â
+  // ÃÂ«ÃÂ¬ÃÂ´ÃÂªÃÂ¸ÃÂ° ÃÂ«ÃÂªÃÂ¨ÃÂ«ÃÂÃÂ¸ ÃÂ¬ÃÂÃÂ¤ÃÂ¬ÃÂ ÃÂ
   useEffect(() => {
     if (weaponModel) {
-      // Ã«ÂªÂ¨Ã«ÂÂ¸ Ã¬ÂÂ¤Ã¬Â Â
+      // ÃÂ«ÃÂªÃÂ¨ÃÂ«ÃÂÃÂ¸ ÃÂ¬ÃÂÃÂ¤ÃÂ¬ÃÂ ÃÂ
       weaponModel.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -24,15 +24,15 @@ const FirstPersonView = () => {
         }
       });
       setModelLoaded(true);
-      console.log("Ã«Â¬Â´ÃªÂ¸Â° Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¡ÂÃ«ÂÂ Ã¬ÂÂÃ«Â£Â");
+      console.log("ÃÂ«ÃÂ¬ÃÂ´ÃÂªÃÂ¸ÃÂ° ÃÂ«ÃÂªÃÂ¨ÃÂ«ÃÂÃÂ¸ ÃÂ«ÃÂ¡ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂ«ÃÂ£ÃÂ");
     }
   }, [weaponModel]);
   
-  // Ã«Â°ÂÃ«ÂÂ Ã­ÂÂ¨ÃªÂ³Â¼Ã«Â¥Â¼ Ã¬ÂÂÃ­ÂÂ Ã¬ÂÂÃ­ÂÂ
+  // ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ­ÃÂÃÂ¨ÃÂªÃÂ³ÃÂ¼ÃÂ«ÃÂ¥ÃÂ¼ ÃÂ¬ÃÂÃÂÃÂ­ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂ­ÃÂÃÂ
   const recoilRef = useRef({
     active: false,
     startTime: 0,
-    duration: 100, // Ã«Â°ÂÃ«ÂÂ Ã¬Â§ÂÃ¬ÂÂ Ã¬ÂÂÃªÂ°Â (ms)
+    duration: 100, // ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂ§ÃÂÃÂ¬ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂªÃÂ°ÃÂ (ms)
     basePositionRecoil: new Vector3(0, 0.05, 0.1),
     baseRotationRecoil: new Euler(-0.05, 0, 0),
     positionRecoil: new Vector3(0, 0, 0),
@@ -41,12 +41,12 @@ const FirstPersonView = () => {
     originalRotation: new Euler(0, Math.PI, 0),
   });
   
-  // Ã«Â°ÂÃ¬ÂÂ¬ Ã¬ÂÂ´Ã«Â²Â¤Ã­ÂÂ¸ Ã«Â¦Â¬Ã¬ÂÂ¤Ã«ÂÂ
+  // ÃÂ«ÃÂ°ÃÂÃÂ¬ÃÂÃÂ¬ ÃÂ¬ÃÂÃÂ´ÃÂ«ÃÂ²ÃÂ¤ÃÂ­ÃÂÃÂ¸ ÃÂ«ÃÂ¦ÃÂ¬ÃÂ¬ÃÂÃÂ¤ÃÂ«ÃÂÃÂ
   useEffect(() => {
     const handleShoot = () => {
       if (gameOver || !gameStarted) return;
       
-      // Ã«ÂÂÃ«ÂÂ¤ Ã«Â°ÂÃ«ÂÂ ÃªÂ³ÂÃ¬ÂÂ°
+      // ÃÂ«ÃÂÃÂÃÂ«ÃÂÃÂ¤ ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂªÃÂ³ÃÂÃÂ¬ÃÂÃÂ°
       const randomRange = 0.01;
       const randomPos = new Vector3(
         recoilRef.current.basePositionRecoil.x + (Math.random() * 2 - 1) * randomRange,
@@ -60,11 +60,11 @@ const FirstPersonView = () => {
         recoilRef.current.baseRotationRecoil.z + (Math.random() * 2 - 1) * randomRange
       );
       
-      // ÃªÂ³ÂÃ¬ÂÂ°Ã«ÂÂ Ã«ÂÂÃ«ÂÂ¤ Ã«Â°ÂÃ«ÂÂ Ã¬Â ÂÃ¬ÂÂ©
+      // ÃÂªÃÂ³ÃÂÃÂ¬ÃÂÃÂ°ÃÂ«ÃÂÃÂ ÃÂ«ÃÂÃÂÃÂ«ÃÂÃÂ¤ ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂ ÃÂÃÂ¬ÃÂÃÂ©
       recoilRef.current.positionRecoil.copy(randomPos);
       recoilRef.current.rotationRecoil.copy(randomRot);
       
-      // Ã«Â°ÂÃ«ÂÂ Ã¬ÂÂ Ã«ÂÂÃ«Â©ÂÃ¬ÂÂ´Ã¬ÂÂ Ã¬ÂÂÃ¬ÂÂ
+      // ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂÃÂ ÃÂ«ÃÂÃÂÃÂ«ÃÂ©ÃÂÃÂ¬ÃÂÃÂ´ÃÂ¬ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂ¬ÃÂÃÂ
       recoilRef.current.active = true;
       recoilRef.current.startTime = performance.now();
     };
@@ -76,25 +76,25 @@ const FirstPersonView = () => {
     };
   }, [gameStarted, gameOver]);
   
-  // Ã«Â°ÂÃ«ÂÂ Ã¬ÂÂ Ã«ÂÂÃ«Â©ÂÃ¬ÂÂ´Ã¬ÂÂ Ã¬Â²ÂÃ«Â¦Â¬
+  // ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂÃÂ ÃÂ«ÃÂÃÂÃÂ«ÃÂ©ÃÂÃÂ¬ÃÂÃÂ´ÃÂ¬ÃÂÃÂ ÃÂ¬ÃÂ²ÃÂÃÂ«ÃÂ¦ÃÂ¬
   useFrame(() => {
     if (!weaponRef.current || !modelLoaded || !gameStarted) return;
     
-    // Ã«Â°ÂÃ«ÂÂ Ã¬ÂÂ Ã«ÂÂÃ«Â©ÂÃ¬ÂÂ´Ã¬ÂÂ Ã¬Â²ÂÃ«Â¦Â¬
+    // ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂÃÂ ÃÂ«ÃÂÃÂÃÂ«ÃÂ©ÃÂÃÂ¬ÃÂÃÂ´ÃÂ¬ÃÂÃÂ ÃÂ¬ÃÂ²ÃÂÃÂ«ÃÂ¦ÃÂ¬
     if (recoilRef.current.active) {
       const elapsed = performance.now() - recoilRef.current.startTime;
       const progress = Math.min(elapsed / recoilRef.current.duration, 1);
       
       if (progress < 1) {
-        // Ã«Â°ÂÃ«ÂÂ Ã¬ÂÂ Ã«ÂÂÃ«Â©ÂÃ¬ÂÂ´Ã¬ÂÂ (Ã«Â¹Â Ã«Â¥Â´ÃªÂ²Â Ã¬ÂµÂÃ«ÂÂ Ã«Â°ÂÃ«ÂÂÃ¬ÂÂ¼Ã«Â¡Â Ã¬ÂÂ´Ã«ÂÂ Ã­ÂÂ Ã¬Â²ÂÃ¬Â²ÂÃ­ÂÂ Ã¬ÂÂÃ«ÂÂ Ã¬ÂÂÃ«Â¦Â¬Ã«Â¡Â)
-        const recoilPhase = 0.3; // Ã«Â°ÂÃ«ÂÂ Ã«ÂÂ¨ÃªÂ³Â Ã«Â¹ÂÃ¬ÂÂ¨
+        // ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂÃÂ ÃÂ«ÃÂÃÂÃÂ«ÃÂ©ÃÂÃÂ¬ÃÂÃÂ´ÃÂ¬ÃÂÃÂ (ÃÂ«ÃÂ¹ÃÂ ÃÂ«ÃÂ¥ÃÂ´ÃÂªÃÂ²ÃÂ ÃÂ¬ÃÂµÃÂÃÂ«ÃÂÃÂ ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂÃÂ¬ÃÂÃÂ¼ÃÂ«ÃÂ¡ÃÂ ÃÂ¬ÃÂÃÂ´ÃÂ«ÃÂÃÂ ÃÂ­ÃÂÃÂ ÃÂ¬ÃÂ²ÃÂÃÂ¬ÃÂ²ÃÂÃÂ­ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂ«ÃÂ¦ÃÂ¬ÃÂ«ÃÂ¡ÃÂ)
+        const recoilPhase = 0.3; // ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ«ÃÂÃÂ¨ÃÂªÃÂ³ÃÂ ÃÂ«ÃÂ¹ÃÂÃÂ¬ÃÂÃÂ¨
         
         if (progress < recoilPhase) {
-          // Ã«Â¹Â Ã«Â¥Â´ÃªÂ²Â Ã«Â°ÂÃ«ÂÂ Ã¬Â ÂÃ¬ÂÂ©
+          // ÃÂ«ÃÂ¹ÃÂ ÃÂ«ÃÂ¥ÃÂ´ÃÂªÃÂ²ÃÂ ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂ ÃÂÃÂ¬ÃÂÃÂ©
           const recoilProgress = progress / recoilPhase;
           const easedProgress = 1 - Math.pow(1 - recoilProgress, 2);
           
-          // Ã«Â¬Â´ÃªÂ¸Â° Ã«ÂªÂ¨Ã«ÂÂ¸Ã¬ÂÂ Ã«Â°ÂÃ«ÂÂ Ã¬Â ÂÃ¬ÂÂ©
+          // ÃÂ«ÃÂ¬ÃÂ´ÃÂªÃÂ¸ÃÂ° ÃÂ«ÃÂªÃÂ¨ÃÂ«ÃÂÃÂ¸ÃÂ¬ÃÂÃÂ ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂ ÃÂÃÂ¬ÃÂÃÂ©
           weaponRef.current.position.set(
             recoilRef.current.originalPosition.x + recoilRef.current.positionRecoil.x * easedProgress,
             recoilRef.current.originalPosition.y + recoilRef.current.positionRecoil.y * easedProgress,
@@ -107,7 +107,7 @@ const FirstPersonView = () => {
             recoilRef.current.originalRotation.z + recoilRef.current.rotationRecoil.z * easedProgress
           );
         } else {
-          // Ã¬Â²ÂÃ¬Â²ÂÃ­ÂÂ Ã¬ÂÂÃ«ÂÂ Ã¬ÂÂÃ«Â¦Â¬Ã«Â¡Â Ã«ÂÂÃ¬ÂÂÃ¬ÂÂ´
+          // ÃÂ¬ÃÂ²ÃÂÃÂ¬ÃÂ²ÃÂÃÂ­ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂ«ÃÂ¦ÃÂ¬ÃÂ«ÃÂ¡ÃÂ ÃÂ«ÃÂÃÂÃÂ¬ÃÂÃÂÃÂ¬ÃÂÃÂ´
           const recoveryProgress = (progress - recoilPhase) / (1 - recoilPhase);
           const easedRecovery = Math.pow(recoveryProgress, 0.5);
           
@@ -124,7 +124,7 @@ const FirstPersonView = () => {
           );
         }
       } else {
-        // Ã«Â°ÂÃ«ÂÂ Ã¬ÂÂ Ã«ÂÂÃ«Â©ÂÃ¬ÂÂ´Ã¬ÂÂ Ã¬ÂÂÃ«Â£Â, Ã¬ÂÂÃ«ÂÂ Ã¬ÂÂÃ¬Â¹ÂÃ«Â¡Â Ã«Â³ÂµÃªÂ·Â
+        // ÃÂ«ÃÂ°ÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂÃÂ ÃÂ«ÃÂÃÂÃÂ«ÃÂ©ÃÂÃÂ¬ÃÂÃÂ´ÃÂ¬ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂ«ÃÂ£ÃÂ, ÃÂ¬ÃÂÃÂÃÂ«ÃÂÃÂ ÃÂ¬ÃÂÃÂÃÂ¬ÃÂ¹ÃÂÃÂ«ÃÂ¡ÃÂ ÃÂ«ÃÂ³ÃÂµÃÂªÃÂ·ÃÂ
         weaponRef.current.position.copy(recoilRef.current.originalPosition);
         weaponRef.current.rotation.copy(recoilRef.current.originalRotation);
         recoilRef.current.active = false;
@@ -132,7 +132,7 @@ const FirstPersonView = () => {
     }
   });
   
-  // Ã«ÂªÂ¨Ã«ÂÂ¸ Ã«Â¯Â¸Ã«Â¦Â¬ Ã«Â¡ÂÃ«ÂÂ
+  // ÃÂ«ÃÂªÃÂ¨ÃÂ«ÃÂÃÂ¸ ÃÂ«ÃÂ¯ÃÂ¸ÃÂ«ÃÂ¦ÃÂ¬ ÃÂ«ÃÂ¡ÃÂÃÂ«ÃÂÃÂ
   useGLTF.preload("https://agent8-games.verse8.io/assets/3D/weapons/ak47.glb");
   
   return (
@@ -149,7 +149,7 @@ const FirstPersonView = () => {
           {modelLoaded && (
             <primitive 
               object={weaponModel.clone()} 
-              scale={[0.03, 0.03, 0.03]} // Ã«Â¬Â´ÃªÂ¸Â° Ã­ÂÂ¬ÃªÂ¸Â° Ã¬Â¦ÂÃªÂ°Â
+              scale={[0.03, 0.03, 0.03]} // ÃÂ«ÃÂ¬ÃÂ´ÃÂªÃÂ¸ÃÂ° ÃÂ­ÃÂÃÂ¬ÃÂªÃÂ¸ÃÂ° ÃÂ¬ÃÂ¦ÃÂÃÂªÃÂ°ÃÂ
             />
           )}
         </group>

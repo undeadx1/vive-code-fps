@@ -9,7 +9,7 @@ const UI = () => {
   const score = useGameStore((state) => state.score);
   const resetGame = useGameStore((state) => state.resetGame);
   
-  // ê²ì ìì íë©´
+  // ÃªÂ²ÂÃ¬ÂÂ Ã¬ÂÂÃ¬ÂÂ Ã­ÂÂÃ«Â©Â´
   const renderStartScreen = () => {
     return (
       <div style={{
@@ -22,7 +22,7 @@ const UI = () => {
         fontSize: '24px',
         fontFamily: '"Rajdhani", sans-serif',
         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
-        pointerEvents: 'auto' // ìì íë©´ì í´ë¦­ ê°ë¥íëë¡ ì¤ì 
+        pointerEvents: 'auto' // Ã¬ÂÂÃ¬ÂÂ Ã­ÂÂÃ«Â©Â´Ã¬ÂÂ Ã­ÂÂ´Ã«Â¦Â­ ÃªÂ°ÂÃ«ÂÂ¥Ã­ÂÂÃ«ÂÂÃ«Â¡Â Ã¬ÂÂ¤Ã¬Â Â
       }}>
         <h1 style={{ 
           fontSize: '48px', 
@@ -30,7 +30,7 @@ const UI = () => {
           textTransform: 'uppercase',
           letterSpacing: '3px',
           color: '#ff4d4d'
-        }}>FPS ê²ì</h1>
+        }}>FPS ÃªÂ²ÂÃ¬ÂÂ</h1>
         <div style={{
           backgroundColor: 'rgba(0, 0, 0, 0.6)',
           padding: '20px 40px',
@@ -41,25 +41,25 @@ const UI = () => {
           <p style={{ 
             fontSize: '28px',
             marginBottom: '30px'
-          }}>í´ë¦­íì¬ ê²ì ìì</p>
+          }}>Ã­ÂÂ´Ã«Â¦Â­Ã­ÂÂÃ¬ÂÂ¬ ÃªÂ²ÂÃ¬ÂÂ Ã¬ÂÂÃ¬ÂÂ</p>
           <div style={{ 
             fontSize: '18px',
             textAlign: 'left',
             marginBottom: '20px',
             color: '#cccccc'
           }}>
-            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>WASD</span>: ì´ë</p>
-            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>SHIFT</span>: ë¬ë¦¬ê¸°</p>
-            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>ë§ì°ì¤</span>: ìì  ë³ê²½</p>
-            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>ì¢í´ë¦­</span>: ë°ì¬</p>
-            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>ì¤íì´ì¤ë°</span>: ì í</p>
+            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>WASD</span>: Ã¬ÂÂ´Ã«ÂÂ</p>
+            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>SHIFT</span>: Ã«ÂÂ¬Ã«Â¦Â¬ÃªÂ¸Â°</p>
+            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>Ã«Â§ÂÃ¬ÂÂ°Ã¬ÂÂ¤</span>: Ã¬ÂÂÃ¬Â Â Ã«Â³ÂÃªÂ²Â½</p>
+            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>Ã¬Â¢ÂÃ­ÂÂ´Ã«Â¦Â­</span>: Ã«Â°ÂÃ¬ÂÂ¬</p>
+            <p><span style={{color: '#ff4d4d', fontWeight: 'bold'}}>Ã¬ÂÂ¤Ã­ÂÂÃ¬ÂÂ´Ã¬ÂÂ¤Ã«Â°Â</span>: Ã¬Â ÂÃ­ÂÂ</p>
           </div>
         </div>
       </div>
     );
   };
   
-  // ê²ì ì¤ë² íë©´
+  // ÃªÂ²ÂÃ¬ÂÂ Ã¬ÂÂ¤Ã«Â²Â Ã­ÂÂÃ«Â©Â´
   const renderGameOverScreen = () => {
     return (
       <div style={{
@@ -72,7 +72,7 @@ const UI = () => {
         fontSize: '24px',
         fontFamily: '"Rajdhani", sans-serif',
         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
-        pointerEvents: 'auto' // ê²ì ì¤ë² íë©´ì í´ë¦­ ê°ë¥íëë¡ ì¤ì 
+        pointerEvents: 'auto' // ÃªÂ²ÂÃ¬ÂÂ Ã¬ÂÂ¤Ã«Â²Â Ã­ÂÂÃ«Â©Â´Ã¬ÂÂ Ã­ÂÂ´Ã«Â¦Â­ ÃªÂ°ÂÃ«ÂÂ¥Ã­ÂÂÃ«ÂÂÃ«Â¡Â Ã¬ÂÂ¤Ã¬Â Â
       }}>
         <h1 style={{ 
           fontSize: '48px', 
@@ -80,7 +80,7 @@ const UI = () => {
           textTransform: 'uppercase',
           letterSpacing: '3px',
           color: '#ff4d4d'
-        }}>ê²ì ì¤ë²</h1>
+        }}>ÃªÂ²ÂÃ¬ÂÂ Ã¬ÂÂ¤Ã«Â²Â</h1>
         <div style={{
           backgroundColor: 'rgba(0, 0, 0, 0.6)',
           padding: '20px 40px',
@@ -91,7 +91,7 @@ const UI = () => {
           <p style={{ 
             fontSize: '28px',
             marginBottom: '30px'
-          }}>ì ì: {score}</p>
+          }}>Ã¬Â ÂÃ¬ÂÂ: {score}</p>
           <button 
             onClick={resetGame}
             style={{
@@ -119,14 +119,14 @@ const UI = () => {
               e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            ë¤ì ìì
+            Ã«ÂÂ¤Ã¬ÂÂ Ã¬ÂÂÃ¬ÂÂ
           </button>
         </div>
       </div>
     );
   };
   
-  // ê²ì ì¤ HUD
+  // ÃªÂ²ÂÃ¬ÂÂ Ã¬Â¤Â HUD
   const renderHUD = () => {
     return (
       <div style={{
@@ -142,7 +142,7 @@ const UI = () => {
         alignItems: 'flex-end',
         padding: '0 20px'
       }}>
-        {/* ì¼ìª½ ì ë³´ í¨ë (ì²´ë ¥) */}
+        {/* Ã¬ÂÂ¼Ã¬ÂªÂ½ Ã¬Â ÂÃ«Â³Â´ Ã­ÂÂ¨Ã«ÂÂ (Ã¬Â²Â´Ã«Â Â¥) */}
         <div style={{ 
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           padding: '15px',
@@ -150,7 +150,7 @@ const UI = () => {
           border: '1px solid rgba(255, 255, 255, 0.1)',
           minWidth: '250px'
         }}>
-          {/* ì²´ë ¥ ë° */}
+          {/* Ã¬Â²Â´Ã«Â Â¥ Ã«Â°Â */}
           <div style={{ marginBottom: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <span style={{ 
@@ -159,7 +159,7 @@ const UI = () => {
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
                 letterSpacing: '1px'
-              }}>ì²´ë ¥</span>
+              }}>Ã¬Â²Â´Ã«Â Â¥</span>
               <div style={{ 
                 width: '200px', 
                 height: '20px', 
@@ -184,18 +184,18 @@ const UI = () => {
             </div>
           </div>
           
-          {/* ì ì */}
+          {/* Ã¬Â ÂÃ¬ÂÂ */}
           <div style={{ 
             fontSize: '20px',
             fontWeight: 'bold',
             color: '#ffcc00',
             textShadow: '0 0 5px rgba(255, 204, 0, 0.7)'
           }}>
-            ì ì: {score}
+            Ã¬Â ÂÃ¬ÂÂ: {score}
           </div>
         </div>
         
-        {/* ì¤ë¥¸ìª½ ì ë³´ í¨ë (íì½) */}
+        {/* Ã¬ÂÂ¤Ã«Â¥Â¸Ã¬ÂªÂ½ Ã¬Â ÂÃ«Â³Â´ Ã­ÂÂ¨Ã«ÂÂ (Ã­ÂÂÃ¬ÂÂ½) */}
         <div style={{ 
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           padding: '15px',
@@ -204,7 +204,7 @@ const UI = () => {
           minWidth: '200px',
           textAlign: 'right'
         }}>
-          {/* íì½ */}
+          {/* Ã­ÂÂÃ¬ÂÂ½ */}
           <div style={{ 
             fontSize: '28px',
             fontWeight: 'bold',
@@ -219,7 +219,7 @@ const UI = () => {
     );
   };
   
-  // ì¡°ì¤ì 
+  // Ã¬Â¡Â°Ã¬Â¤ÂÃ¬Â Â
   const renderCrosshair = () => {
     return (
       <div style={{
@@ -231,7 +231,7 @@ const UI = () => {
         height: '20px',
         pointerEvents: 'none'
       }}>
-        {/* ì¤ì¬ì  */}
+        {/* Ã¬Â¤ÂÃ¬ÂÂ¬Ã¬Â Â */}
         <div style={{
           position: 'absolute',
           top: '50%',
@@ -243,7 +243,7 @@ const UI = () => {
           borderRadius: '50%'
         }} />
         
-        {/* ì­ìì  */}
+        {/* Ã¬ÂÂ­Ã¬ÂÂÃ¬ÂÂ  */}
         <div style={{
           position: 'absolute',
           top: '50%',
@@ -281,7 +281,7 @@ const UI = () => {
           backgroundColor: 'rgba(255, 255, 255, 0.8)'
         }} />
         
-        {/* ì¸ë¶ ì */}
+        {/* Ã¬ÂÂ¸Ã«Â¶Â Ã¬ÂÂ */}
         <div style={{
           position: 'absolute',
           top: '50%',

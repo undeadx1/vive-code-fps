@@ -14,7 +14,7 @@ export const EffectsManager = forwardRef((props, ref) => {
   const [effects, setEffects] = useState<Effect[]>([]);
   const nextIdRef = useRef(0);
 
-  // 컴포넌트 외부에서 접근할 수 있는 메서드 노출
+  // ì»´í¬ëí¸ ì¸ë¶ìì ì ê·¼í  ì ìë ë©ìë ë¸ì¶
   useImperativeHandle(ref, () => ({
     addFireballEffect: (position: Vector3, duration: number = 2000, scale: number = 1) => {
       const newEffect = {
@@ -29,14 +29,14 @@ export const EffectsManager = forwardRef((props, ref) => {
     }
   }));
 
-  // 일정 시간 후 오래된 이펙트 제거
+  // ì¼ì  ìê° í ì¤ëë ì´íí¸ ì ê±°
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
       setEffects(prevEffects => 
         prevEffects.filter(effect => now - effect.timeCreated < effect.duration)
       );
-    }, 1000); // 1초마다 체크
+    }, 1000); // 1ì´ë§ë¤ ì²´í¬
 
     return () => clearInterval(interval);
   }, []);

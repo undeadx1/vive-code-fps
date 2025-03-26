@@ -14,7 +14,7 @@ const Game = () => {
   const gameStarted = useGameStore((state) => state.gameStarted);
   const gameOver = useGameStore((state) => state.gameOver);
   
-  // ê²ì ìì ì²ë¦¬
+  // ÃªÂ²ÂÃ¬ÂÂ Ã¬ÂÂÃ¬ÂÂ Ã¬Â²ÂÃ«Â¦Â¬
   useEffect(() => {
     const handleStartGame = () => {
       if (!gameStarted && !gameOver && pointerLockControlsRef) {
@@ -23,7 +23,7 @@ const Game = () => {
       }
     };
     
-    // ê²ì ìì ì´ë²¤í¸ ë¦¬ì¤ë ë±ë¡
+    // ÃªÂ²ÂÃ¬ÂÂ Ã¬ÂÂÃ¬ÂÂ Ã¬ÂÂ´Ã«Â²Â¤Ã­ÂÂ¸ Ã«Â¦Â¬Ã¬ÂÂ¤Ã«ÂÂ Ã«ÂÂ±Ã«Â¡Â
     window.addEventListener('click', handleStartGame);
     
     return () => {
@@ -31,14 +31,14 @@ const Game = () => {
     };
   }, [gameStarted, gameOver, pointerLockControlsRef, setGameStarted]);
   
-  // í¬ì¸í° ë½ ìí ë³ê²½ ê°ì§
+  // Ã­ÂÂ¬Ã¬ÂÂ¸Ã­ÂÂ° Ã«ÂÂ½ Ã¬ÂÂÃ­ÂÂ Ã«Â³ÂÃªÂ²Â½ ÃªÂ°ÂÃ¬Â§Â
   useEffect(() => {
     if (!pointerLockControlsRef) return;
     
     const handleLockChange = () => {
       if (!document.pointerLockElement && gameStarted && !gameOver) {
-        // ê²ì ì¤ í¬ì¸í° ë½ì´ í´ì ëë©´ ì¼ì ì ì§ ì²ë¦¬
-        console.log('í¬ì¸í° ë½ í´ì ë¨ - ì¼ì ì ì§');
+        // ÃªÂ²ÂÃ¬ÂÂ Ã¬Â¤Â Ã­ÂÂ¬Ã¬ÂÂ¸Ã­ÂÂ° Ã«ÂÂ½Ã¬ÂÂ´ Ã­ÂÂ´Ã¬Â ÂÃ«ÂÂÃ«Â©Â´ Ã¬ÂÂ¼Ã¬ÂÂ Ã¬Â ÂÃ¬Â§Â Ã¬Â²ÂÃ«Â¦Â¬
+        console.log('Ã­ÂÂ¬Ã¬ÂÂ¸Ã­ÂÂ° Ã«ÂÂ½ Ã­ÂÂ´Ã¬Â ÂÃ«ÂÂ¨ - Ã¬ÂÂ¼Ã¬ÂÂ Ã¬Â ÂÃ¬Â§Â');
       }
     };
     
@@ -51,7 +51,7 @@ const Game = () => {
   
   return (
     <>
-      {/* ë©ì¸ ê²ì ìºë²ì¤ */}
+      {/* Ã«Â©ÂÃ¬ÂÂ¸ ÃªÂ²ÂÃ¬ÂÂ Ã¬ÂºÂÃ«Â²ÂÃ¬ÂÂ¤ */}
       <Canvas 
         shadows 
         camera={{ fov: 75, near: 0.1, far: 1000 }}
@@ -61,7 +61,7 @@ const Game = () => {
           left: 0,
           width: '100%',
           height: '100%',
-          zIndex: 1 // ëªìì ì¼ë¡ zIndex ì¤ì 
+          zIndex: 1 // Ã«ÂªÂÃ¬ÂÂÃ¬Â ÂÃ¬ÂÂ¼Ã«Â¡Â zIndex Ã¬ÂÂ¤Ã¬Â Â
         }}
       >
         <Sky sunPosition={[100, 20, 100]} />
@@ -84,30 +84,30 @@ const Game = () => {
           <Level />
         </Physics>
         
-        {/* í¬ì¸í° ë½ ì»¨í¸ë¡¤ */}
+        {/* Ã­ÂÂ¬Ã¬ÂÂ¸Ã­ÂÂ° Ã«ÂÂ½ Ã¬Â»Â¨Ã­ÂÂ¸Ã«Â¡Â¤ */}
         <PointerLockControls 
           ref={setPointerLockControlsRef} 
           selector="#game-container"
         />
       </Canvas>
       
-      {/* ë¬´ê¸° ë·° ìºë²ì¤ (ë³ë ë ì´ì´) */}
+      {/* Ã«Â¬Â´ÃªÂ¸Â° Ã«Â·Â° Ã¬ÂºÂÃ«Â²ÂÃ¬ÂÂ¤ (Ã«Â³ÂÃ«ÂÂ Ã«Â ÂÃ¬ÂÂ´Ã¬ÂÂ´) */}
       <WeaponCanvas />
       
-      {/* UI ì¤ë²ë ì´ - ê°ì¥ ëì zIndexë¡ ì¤ì  */}
+      {/* UI Ã¬ÂÂ¤Ã«Â²ÂÃ«Â ÂÃ¬ÂÂ´ - ÃªÂ°ÂÃ¬ÂÂ¥ Ã«ÂÂÃ¬ÂÂ zIndexÃ«Â¡Â Ã¬ÂÂ¤Ã¬Â Â */}
       <div style={{ 
         position: 'absolute', 
         top: 0, 
         left: 0, 
         width: '100%', 
         height: '100%', 
-        zIndex: 10, // UIë¥¼ ê°ì¥ ìì íìíê¸° ìí´ ëì zIndex ì¤ì 
-        pointerEvents: 'none' // UIë¥¼ íµê³¼íì¬ ê²ì ì¡°ì ê°ë¥íëë¡ ì¤ì 
+        zIndex: 10, // UIÃ«Â¥Â¼ ÃªÂ°ÂÃ¬ÂÂ¥ Ã¬ÂÂÃ¬ÂÂ Ã­ÂÂÃ¬ÂÂÃ­ÂÂÃªÂ¸Â° Ã¬ÂÂÃ­ÂÂ´ Ã«ÂÂÃ¬ÂÂ zIndex Ã¬ÂÂ¤Ã¬Â Â
+        pointerEvents: 'none' // UIÃ«Â¥Â¼ Ã­ÂÂµÃªÂ³Â¼Ã­ÂÂÃ¬ÂÂ¬ ÃªÂ²ÂÃ¬ÂÂ Ã¬Â¡Â°Ã¬ÂÂ ÃªÂ°ÂÃ«ÂÂ¥Ã­ÂÂÃ«ÂÂÃ«Â¡Â Ã¬ÂÂ¤Ã¬Â Â
       }}>
         <UI />
       </div>
       
-      {/* ê²ì ì»¨íì´ë (í¬ì¸í° ë½ ëì) */}
+      {/* ÃªÂ²ÂÃ¬ÂÂ Ã¬Â»Â¨Ã­ÂÂÃ¬ÂÂ´Ã«ÂÂ (Ã­ÂÂ¬Ã¬ÂÂ¸Ã­ÂÂ° Ã«ÂÂ½ Ã«ÂÂÃ¬ÂÂ) */}
       <div id="game-container" style={{ 
         position: 'absolute', 
         top: 0, 
