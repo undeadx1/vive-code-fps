@@ -1,0 +1,64 @@
+{
+  "3d": {
+    "characters": {
+      "space-marine": {
+        "url": "https://agent8-games.verse8.io/assets/3d/characters/space-marine.glb",
+        "description": "3D space marine character model"
+      }
+    },
+    "animations": {
+      "idle": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/idle.glb",
+        "description": "Idle animation"
+      },
+      "walk": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/walk.glb",
+        "description": "Walk animation"
+      },
+      "run": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/run.glb",
+        "description": "Run animation"
+      },
+      "jump-up": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/jump-up.glb",
+        "description": "Jump up animation"
+      },
+      "fall-idle": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/fall-idle.glb",
+        "description": "Fall idle animation"
+      },
+      "fall-down": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/fall-down.glb",
+        "description": "Fall down animation"
+      },
+      "punch": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/punch.glb",
+        "description": "Punch animation"
+      },
+      "melee-attack": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/melee-attack.glb", 
+        "description": "Melee attack animation"
+      },
+      "aim": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/aimming.glb",
+        "description": "Aim animation"
+      },
+      "shoot": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/shoot.glb",
+        "description": "Shoot animation"
+      },
+      "aim-run": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/shoot-run.glb",
+        "description": "Aim run animation"
+      },
+      "hit": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/hit.glb",
+        "description": "Hit animation"
+      },
+      "die": {
+        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/death.glb",
+        "description": "Death animation"
+      }
+    }
+  }
+}
