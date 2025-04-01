@@ -12,7 +12,9 @@ import { Skybox } from './Skybox';
 import { 
   TERRAIN_WIDTH, 
   TERRAIN_DEPTH,
-  PLAYER_HEIGHT_OFFSET
+  PLAYER_HEIGHT_OFFSET,
+  PLAYER_WALK_SPEED,
+  PLAYER_RUN_SPEED
 } from '../../constants/terrain';
 
 export function Experience() {
@@ -27,7 +29,6 @@ export function Experience() {
   }, []);
 
   const controllerRef = useRef<ControllerHandle>(null);
-  const targetHeight = 1.6;
   
   // 지형 높이맵 함수 저장
   const [terrainData, setTerrainData] = useState<{
@@ -57,10 +58,15 @@ export function Experience() {
           <FreeViewController
             ref={controllerRef}
             position={initialPlayerPosition}
+            capsuleRadius={0.4}
+            capsuleHeight={1.8}
+            walkSpeed={PLAYER_WALK_SPEED}
+            runSpeed={PLAYER_RUN_SPEED}
           >
             <Player 
               initState={CharacterState.IDLE} 
               controllerRef={controllerRef} 
+              targetHeight={1.8}
             />
           </FreeViewController>
         </KeyboardControls>

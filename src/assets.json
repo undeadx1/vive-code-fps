@@ -1,8 +1,8 @@
 {
   "characters": {
     "player": {
-      "url": "vrm or glb",
-      "description": "Player Character"
+      "url": "https://agent8-games.verse8.io/assets/3d/characters/human/knight.glb",
+      "description": "Medieval knight character model with armor. Suitable for fantasy or historical scenarios requiring armored warriors."
     }
   },
   "animations": {
@@ -19,7 +19,7 @@
       "description": "Run"
     },
     "jump": {
-      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/fall-idle.glb",
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/jump-up.glb",
       "description": "Jump"
     },
     "punch": {
