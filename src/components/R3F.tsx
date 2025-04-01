@@ -6,7 +6,7 @@ import React, { Suspense } from 'react';
  * This component is responsible for setting up the 3D environment
  * including physics, lighting, and scene elements.
  */
-export const UI: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+export const R3F: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return (
     <>
       {children}

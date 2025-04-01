@@ -1,64 +1,94 @@
 {
-  "3d": {
-    "characters": {
-      "space-marine": {
-        "url": "https://agent8-games.verse8.io/assets/3d/characters/space-marine.glb",
-        "description": "3D space marine character model"
-      }
+  "characters": {
+    "player": {
+      "url": "vrm or glb",
+      "description": "Player Character"
+    }
+  },
+  "animations": {
+    "idle": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/idle.glb",
+      "description": "Idle"
     },
-    "animations": {
-      "idle": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/idle.glb",
-        "description": "Idle animation"
-      },
-      "walk": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/walk.glb",
-        "description": "Walk animation"
-      },
-      "run": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/run.glb",
-        "description": "Run animation"
-      },
-      "jump-up": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/jump-up.glb",
-        "description": "Jump up animation"
-      },
-      "fall-idle": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/fall-idle.glb",
-        "description": "Fall idle animation"
-      },
-      "fall-down": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/fall-down.glb",
-        "description": "Fall down animation"
-      },
-      "punch": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/punch.glb",
-        "description": "Punch animation"
-      },
-      "melee-attack": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/melee-attack.glb", 
-        "description": "Melee attack animation"
-      },
-      "aim": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/aimming.glb",
-        "description": "Aim animation"
-      },
-      "shoot": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/shoot.glb",
-        "description": "Shoot animation"
-      },
-      "aim-run": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/shoot-run.glb",
-        "description": "Aim run animation"
-      },
-      "hit": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/hit.glb",
-        "description": "Hit animation"
-      },
-      "die": {
-        "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/death.glb",
-        "description": "Death animation"
-      }
+    "walk": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/walk.glb",
+      "description": "Walk"
+    },
+    "run": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/run.glb",
+      "description": "Run"
+    },
+    "jump": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/fall-idle.glb",
+      "description": "Jump"
+    },
+    "punch": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/punch.glb",
+      "description": "Punch"
+    },
+    "melee_attack": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/melee-attack.glb",
+      "description": "Melee Attack"
+    },
+    "aim": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/aimming.glb",
+      "description": "Aim"
+    },
+    "shoot": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/shoot.glb",
+      "description": "Shoot"
+    },
+    "aim_run": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/shoot-run.glb",
+      "description": "Aim Run"
+    },
+    "hit": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/hit.glb",
+      "description": "Hit"
+    },
+    "die": {
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/death.glb",
+      "description": "Die"
+    }
+  },
+  "textures": {
+    "terrainBase": {
+      "url": "https://agent8-games.verse8.io/assets/3d/textures/terrain/terrainBase.png",
+      "description": "Base texture for terrain system"
+    },
+    "terrainNormal": {
+      "url": "https://agent8-games.verse8.io/assets/3d/textures/terrain/terrainBase_normal.png",
+      "description": "Normal map for terrain system"
+    }
+  },
+  "skyboxes": {
+    "sunset": {
+      "url": "https://agent8-games.verse8.io/assets/3d/textures/HDRSkybox/belfast_sunset_puresky_4k.hdr",
+      "description": "Vivid sunset sky background skybox HDR environment with minimal clouds"
+    },
+    "rocky": {
+      "url": "https://agent8-games.verse8.io/assets/3d/textures/HDRSkybox/rocky_ridge_puresky_4k.hdr",
+      "description": "Clear, bright sky background skybox HDR environment over a rocky ridge"
+    },
+    "sunny": {
+      "url": "https://agent8-games.verse8.io/assets/3d/textures/HDRSkybox/kloppenheim_06_puresky_4k.hdr",
+      "description": "Clear, sunny sky background skybox HDR environment with minimal clouds"
+    }
+  },
+  "shaders": {
+    "grassVertex": {
+      "url": "https://agent8-games.verse8.io/assets/3d/shaders/vertex/grass.vert.glsl",
+      "description": "Vertex shader for grass"
+    },
+    "grassFragment": {
+      "url": "https://agent8-games.verse8.io/assets/3d/shaders/fragment/grass.frag.glsl",
+      "description": "Fragment shader for grass"
+    }
+  },
+  "objects": {
+    "rock": {
+      "url": "https://agent8-games.verse8.io/assets/3d/objects/pastel/nature/Rock_Medium_2.gltf",
+      "description": "Medium Rock Type 2 — A smoother, sediment-based boulder with rounded edges"
     }
   }
 }
