@@ -1,65 +1,95 @@
-# 3D 지형 탐험 프로젝트
+# 3D 오픈월드 어드벤처 게임
 
 ## Project Summary
-이 프로젝트는 아름다운 3D 지형을 생성하고 기사 캐릭터로 탐험할 수 있는 환경을 제공합니다. 높이맵 기반의 자연스러운 지형과 풀, 바위 등의 요소를 포함하여 사실적인 자연 환경을 구현했습니다.
+이 프로젝트는 3D 오픈월드 어드벤처 게임으로, 플레이어가 자유롭게 탐험할 수 있는 환경을 제공합니다. 지형 시스템, 캐릭터 컨트롤러, 환경 오브젝트, 풀 시스템 등을 포함하고 있습니다.
 
 ## Implementation Strategy
 이 게임은 **3D Three.js 기반 접근 방식**을 사용합니다:
-- React Three Fiber를 사용하여 3D 렌더링 구현
-- 높이맵 기반 지형 생성 시스템 적용
-- Simplex 노이즈를 활용한 자연스러운 지형 생성
-- GLSL 셰이더를 활용한 풀 렌더링
-- vibe-starter-3d의 FreeViewController를 활용한 캐릭터 및 카메라 제어
-- 기사 캐릭터 모델과 애니메이션 통합
+- React Three Fiber와 react-three-fiber를 활용한 3D 렌더링
+- vibe-starter-3d의 FreeViewController를 사용한 캐릭터 및 카메라 제어
+- 절차적 지형 생성 시스템으로 다양한 지형 구현
+- 셰이더 기반 풀 시스템으로 자연스러운 환경 구현
+- 환경 오브젝트(나무, 바위, 덤불)를 지형에 맞게 배치
+
+주요 기술:
+- Three.js를 통한 3D 렌더링
+- React Three Fiber를 활용한 선언적 3D 구현
+- Rapier 물리 엔진을 통한 충돌 감지 및 물리 시뮬레이션
+- vibe-starter-3d의 캐릭터 렌더링 및 애니메이션 시스템
+- GLSL 셰이더를 활용한 고성능 풀 렌더링
 
 ## Implemented Features
-- 높이맵 기반 지형 생성 시스템
-- 시드 값 기반의 재현 가능한 랜덤 지형
-- 물리 충돌 영역 자동 생성
-- 셰이더 기반 풀 렌더링 시스템
-- 기사 캐릭터 모델 및 애니메이션 통합
-- 지형 위에 캐릭터 배치 및 이동
-- HDR 스카이박스를 통한 환경 조명
-- 사용자 정의 캐릭터 이동 속도 (빠른 걷기 및 달리기)
+- 기본 지형 생성 시스템: 언덕과 계곡이 있는 지형 생성
+- 셰이더 기반 풀 시스템: 바람에 흔들리는 자연스러운 풀 구현
+- 캐릭터 컨트롤러: 이동, 달리기, 점프 등의 기본 동작
+- 환경 오브젝트: 나무, 바위, 덤불 등의 환경 요소
+- 애니메이션 시스템: 캐릭터의 다양한 상태에 따른 애니메이션
+- 기본 UI: 조작 방법 안내
 
 ## File Structure Overview
 
-### src/components/r3f/Terrain.tsx
-- 높이맵 기반 지형 생성 컴포넌트
-- Simplex 노이즈를 사용한 자연스러운 지형 생성
-- 물리 충돌 영역 자동 생성
+### src/main.tsx
+- 애플리케이션의 진입점
+- React 렌더링 설정
 
-### src/components/r3f/Grass.tsx
-- 셰이더 기반 풀 렌더링 시스템
-- 지형 높이에 맞춰 풀 배치
-- 바람에 흔들리는 효과 구현
-
-### src/components/r3f/Experience.tsx
-- 메인 게임 씬 구성
-- 지형, 풀, 캐릭터 등 요소 통합
-- 물리 시스템 및 컨트롤러 설정
-- 캐릭터 이동 속도 설정
-
-### src/components/r3f/Player.tsx
-- 기사 캐릭터 컴포넌트
-- 애니메이션 상태 관리 및 전환 로직
-- 사용자 입력에 따른 캐릭터 상태 변경
-
-### src/components/r3f/Skybox.tsx
-- HDR 스카이박스 구현
-- 환경 조명 설정
-
-### src/components/r3f/Floor.tsx
-- 지형 아래 바닥 충돌 영역 컴포넌트 (현재 사용되지 않음)
-- 참고용으로 유지됨
-
-### src/constants/terrain.ts
-- 지형 생성 관련 상수 정의
-- 지형 설정 값 관리
-- 풀 렌더링 설정 관리
-- 플레이어 이동 속도 설정
+### src/App.tsx
+- 메인 애플리케이션 컴포넌트
+- R3F와 UI 컴포넌트 구성
 
 ### src/assets.json
-- 게임에서 사용하는 리소스 관리
-- 기사 캐릭터 모델 및 애니메이션 경로 저장
-- 텍스처, 셰이더 등 외부 리소스 경로 저장
+- 게임에서 사용하는 모든 에셋 정보
+- 캐릭터, 애니메이션, 환경 오브젝트, 셰이더 등의 URL 관리
+
+### src/components/R3F.tsx
+- React Three Fiber 캔버스 설정
+- 3D 렌더링 환경 구성
+
+### src/components/UI.tsx
+- 게임 UI 컴포넌트
+- 조작 방법 안내 및 게임 정보 표시
+
+### src/components/r3f/Experience.tsx
+- 게임의 주요 경험 컴포넌트
+- 물리 엔진, 지형, 플레이어, 환경, 풀 시스템 등을 조합
+
+### src/components/r3f/GameScene.tsx
+- 게임 씬 컴포넌트
+- 3D 환경 설정 및 Experience 컴포넌트 포함
+
+### src/components/r3f/Lights.tsx
+- 게임 조명 시스템
+- 주변광 및 방향성 조명 설정
+
+### src/components/r3f/Player.tsx
+- 플레이어 캐릭터 컴포넌트
+- 캐릭터 상태 관리 및 애니메이션 처리
+
+### src/components/r3f/terrain/Terrain.tsx
+- 지형 생성 시스템
+- 높이맵 기반 지형 생성 및 물리 충돌 설정
+- 텍스처 및 노말맵 적용
+
+### src/components/r3f/terrain/Grass.tsx
+- 셰이더 기반 풀 렌더링 시스템
+- 인스턴스 기반 고성능 풀 렌더링
+- 바람에 흔들리는 애니메이션 효과
+
+### src/components/r3f/terrain/TerrainUtils.ts
+- 지형 관련 유틸리티 함수
+- 지형 높이에 기반한 오브젝트 위치 계산
+
+### src/components/r3f/environment/Environment.tsx
+- 게임 환경 설정
+- 스카이박스 및 환경 오브젝트 관리
+
+### src/components/r3f/environment/EnvironmentObject.tsx
+- 개별 환경 오브젝트 컴포넌트
+- 지형에 맞춰 오브젝트 배치
+
+### src/constants/character.ts
+- 캐릭터 상태 열거형 정의
+- 캐릭터 관련 상수 관리
+
+### src/constants/controls.ts
+- 키보드 컨트롤 매핑 설정
+- 게임 조작 관련 상수 관리

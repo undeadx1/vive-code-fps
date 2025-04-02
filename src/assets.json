@@ -1,8 +1,8 @@
 {
   "characters": {
     "player": {
-      "url": "https://agent8-games.verse8.io/assets/3d/characters/human/knight.glb",
-      "description": "Medieval knight character model with armor. Suitable for fantasy or historical scenarios requiring armored warriors."
+      "url": "https://agent8-games.verse8.io/assets/3d/characters/human/solider.glb",
+      "description": "Player Character"
     }
   },
   "animations": {
@@ -19,7 +19,7 @@
       "description": "Run"
     },
     "jump": {
-      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/jump-up.glb",
+      "url": "https://agent8-games.verse8.io/assets/3d/animations/mixamorig/fall-idle.glb",
       "description": "Jump"
     },
     "punch": {
@@ -51,6 +51,38 @@
       "description": "Die"
     }
   },
+  "environment": {
+    "skybox": {
+      "url": "https://agent8-games.verse8.io/assets/3d/textures/HDRSkybox/golden_gate_hills_4k.hdr",
+      "description": "Expansive sky background skybox HDR environment over warm, rolling hills."
+    }
+  },
+  "objects": {
+    "tree": {
+      "url": "https://agent8-games.verse8.io/assets/3d/objects/pastel/nature/CommonTree_2.gltf",
+      "description": "Common Tree Type 2 — A broad-canopy tree with dense foliage."
+    },
+    "bush": {
+      "url": "https://agent8-games.verse8.io/assets/3d/objects/pastel/nature/Bush_Common.gltf",
+      "description": "Bush Common — A medium-sized green bush with dense leaves and a clean, rounded silhouette."
+    },
+    "bushWithFlowers": {
+      "url": "https://agent8-games.verse8.io/assets/3d/objects/pastel/nature/Bush_Common_Flowers.gltf",
+      "description": "Bush Common with Flowers — A naturally shaped bush with soft green foliage and scattered wildflowers."
+    },
+    "rock": {
+      "url": "https://agent8-games.verse8.io/assets/3d/objects/pastel/nature/Rock_Medium_2.gltf",
+      "description": "Medium Rock Type 2 — A smoother, sediment-based boulder with rounded edges."
+    },
+    "grassTall": {
+      "url": "https://agent8-games.verse8.io/assets/3d/objects/pastel/nature/Grass_Common_Tall.gltf",
+      "description": "Common Grass Tall — A tall grass model with flowing blades. Excellent for wild fields or hidden exploration areas."
+    },
+    "grassShort": {
+      "url": "https://agent8-games.verse8.io/assets/3d/objects/pastel/nature/Grass_Wispy_Short.gltf",
+      "description": "Wispy Grass Short — A thin, airy grass type with delicate strands. Fits well in drylands or magical plains."
+    }
+  },
   "textures": {
     "terrainBase": {
       "url": "https://agent8-games.verse8.io/assets/3d/textures/terrain/terrainBase.png",
@@ -61,34 +93,14 @@
       "description": "Normal map for terrain system"
     }
   },
-  "skyboxes": {
-    "sunset": {
-      "url": "https://agent8-games.verse8.io/assets/3d/textures/HDRSkybox/belfast_sunset_puresky_4k.hdr",
-      "description": "Vivid sunset sky background skybox HDR environment with minimal clouds"
-    },
-    "rocky": {
-      "url": "https://agent8-games.verse8.io/assets/3d/textures/HDRSkybox/rocky_ridge_puresky_4k.hdr",
-      "description": "Clear, bright sky background skybox HDR environment over a rocky ridge"
-    },
-    "sunny": {
-      "url": "https://agent8-games.verse8.io/assets/3d/textures/HDRSkybox/kloppenheim_06_puresky_4k.hdr",
-      "description": "Clear, sunny sky background skybox HDR environment with minimal clouds"
-    }
-  },
   "shaders": {
     "grassVertex": {
       "url": "https://agent8-games.verse8.io/assets/3d/shaders/vertex/grass.vert.glsl",
-      "description": "Vertex shader for grass"
+      "description": "Vertex shader for grass system"
     },
     "grassFragment": {
       "url": "https://agent8-games.verse8.io/assets/3d/shaders/fragment/grass.frag.glsl",
-      "description": "Fragment shader for grass"
-    }
-  },
-  "objects": {
-    "rock": {
-      "url": "https://agent8-games.verse8.io/assets/3d/objects/pastel/nature/Rock_Medium_2.gltf",
-      "description": "Medium Rock Type 2 — A smoother, sediment-based boulder with rounded edges"
+      "description": "Fragment shader for grass system"
     }
   }
 }

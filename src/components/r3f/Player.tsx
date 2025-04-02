@@ -236,14 +236,14 @@ export const Player: React.FC<PlayerProps> = ({
   // Define the character resource with all animations
   const characterResource: CharacterResource = useMemo(
     () => ({
-      name: "Knight Character",
+      name: "Default Character",
       url: Assets.characters.player.url,
       animations: {
         IDLE: Assets.animations.idle.url,
         WALK: Assets.animations.walk.url,
         RUN: Assets.animations.run.url,
         JUMP: Assets.animations.jump.url,
-        PUNCH: Assets.animations.melee_attack.url, // 기사에게 더 적합한 공격 애니메이션
+        PUNCH: Assets.animations.punch.url,
         HIT: Assets.animations.hit.url,
         DIE: Assets.animations.die.url,
       },
@@ -257,7 +257,6 @@ export const Player: React.FC<PlayerProps> = ({
       animationConfigMap={animationConfigMap}
       currentActionRef={currentStateRef}
       targetHeight={targetHeight}
-      onAnimationComplete={(action) => console.log(`${action} animation completed`)}
     />
   );
 };
